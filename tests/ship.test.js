@@ -1,9 +1,14 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect, beforeEach } from '@jest/globals';
 import Ship from '../src/js/ship.js';
 
 describe('Ship', () => {
   const minLength = Ship.MIN_LENGTH;
   const maxLength = Ship.MAX_LENGTH;
+  let ship;
+
+  beforeEach(() => {
+    ship = new Ship(maxLength);
+  });
 
   test('should define a min and a max length', () => {
     expect(minLength).toBeDefined();
@@ -19,32 +24,32 @@ describe('Ship', () => {
     }).toThrow(Error);
   });
 
-  test('hit() should increase numberOfHits by 1', () => {
-    const ship = new Ship(maxLength);
-    const lengthBefore = ship.getNumberOfHits();
-    ship.hit();
-    expect(ship.getNumberOfHits()).toBe(lengthBefore + 1);
-  });
-
-  test('hit() should throw an Error when ship is already sunk', () => {
-    const ship = new Ship(maxLength);
-    for (let i = 0; i < ship.getLength(); i++) ship.hit();
-    expect(() => {
+  describe('hit()', () => {
+    test('should increase numberOfHits by 1', () => {
+      const hitsBefore = ship.getNumberOfHits();
       ship.hit();
-    }).toThrow(Error);
+      expect(ship.getNumberOfHits()).toBe(hitsBefore + 1);
+    });
+
+    test('should throw an Error when ship is already sunk', () => {
+      for (let i = 0; i < ship.getLength(); i++) ship.hit();
+      expect(() => {
+        ship.hit();
+      }).toThrow(Error);
+    });
   });
 
-  test('isSunk() should return false when numberOfHits is less than length', () => {
-    const ship = new Ship(maxLength);
-    for (let i = 0; i < ship.getLength() - 1; i++) {
-      expect(ship.isSunk()).toBeFalsy();
-      ship.hit();
-    }
-  });
+  describe('isSunk()', () => {
+    test('should return false when numberOfHits is less than length', () => {
+      for (let i = 0; i < ship.getLength() - 1; i++) {
+        expect(ship.isSunk()).toBeFalsy();
+        ship.hit();
+      }
+    });
 
-  test('isSunk() should return true when numberOfHits is equal to length', () => {
-    const ship = new Ship(maxLength);
-    for (let i = 0; i < ship.getLength(); i++) ship.hit();
-    expect(ship.isSunk()).toBeTruthy();
+    test('should return true when numberOfHits is equal to length', () => {
+      for (let i = 0; i < ship.getLength(); i++) ship.hit();
+      expect(ship.isSunk()).toBeTruthy();
+    });
   });
 });
