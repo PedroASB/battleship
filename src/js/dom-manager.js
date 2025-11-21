@@ -1,4 +1,4 @@
-function updateBoard(player, attackFunction) {
+function updateBoard(player, squareClickCallback, squareHoverCallback) {
   const boardDiv = document.getElementById(player.getId()).querySelector('.board');
   boardDiv.innerHTML = '';
 
@@ -17,9 +17,18 @@ function updateBoard(player, attackFunction) {
       squareDiv.innerHTML = `<div class="attack-mark"></div>`;
 
       const coordinates = { x, y };
+
       squareDiv.addEventListener('click', () => {
-        attackFunction(coordinates);
+        squareClickCallback(coordinates);
       });
+
+      squareDiv.addEventListener('mouseenter', () => {
+        const { x, y } = getFriendlyCoordinates(coordinates);
+        squareDiv.title = `${x} ${y}`;
+        squareHoverCallback({ x, y });
+      });
+
+      squareDiv.addEventListener('mouseleave', clearCoordinatesFeedback);
 
       boardDiv.appendChild(squareDiv);
       y++;
@@ -28,7 +37,7 @@ function updateBoard(player, attackFunction) {
   });
 }
 
-export function initializePlayerBox(player, attackFunction) {
+export function initializePlayerBox(player, squareClickCallback, squareHoverCallback) {
   const playersSection = document.querySelector('#players-section');
   const playerBoxTemplate = document.querySelector('#player-box-template');
   const playerBox = playerBoxTemplate.content.cloneNode(true).querySelector('.player-box');
@@ -37,7 +46,7 @@ export function initializePlayerBox(player, attackFunction) {
   playerBox.querySelector('.name').textContent = player.name;
   playersSection.appendChild(playerBox);
 
-  updateBoard(player, attackFunction);
+  updateBoard(player, squareClickCallback, squareHoverCallback);
 }
 
 export function clearPlayersSection() {
@@ -95,6 +104,26 @@ export function displayCurrentTurnMessage(playerName) {
 export function clearCurrentTurnMessage() {
   const turnMessage = document.querySelector('#feedback-section .turn');
   turnMessage.innerHTML = '';
+}
+
+function getFriendlyCoordinates(coordinates) {
+  return { x: String.fromCharCode(65 + (coordinates.x % 26)), y: coordinates.y + 1 };
+}
+
+export function displayAttackMessage(attackerName, receiverName, coordinates) {
+  const feedbackMessage = document.querySelector('#feedback-section .message');
+  const { x, y } = getFriendlyCoordinates(coordinates);
+  feedbackMessage.textContent = `${attackerName} attacked ${receiverName} at ${x} ${y}`;
+}
+
+export function displayCoordinatesFeedback(coordinates) {
+  const coordinatesFeedback = document.querySelector('#feedback-section .coordinates');
+  coordinatesFeedback.textContent = `${coordinates.x} ${coordinates.y}`;
+}
+
+export function clearCoordinatesFeedback() {
+  const coordinatesFeedback = document.querySelector('#feedback-section .coordinates');
+  coordinatesFeedback.textContent = '';
 }
 
 // Note: this is a temporary behavior for handle winning

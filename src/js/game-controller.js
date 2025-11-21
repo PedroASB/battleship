@@ -42,9 +42,7 @@ export default class GameController {
 
     player.receiveAttack(coordinates);
     domManager.receiveAttack(player.getId(), coordinates);
-    domManager.displayFeedbackMessage(
-      `${this.#attacker.name} attacked ${this.#receiver.name} at [${coordinates.x}, ${coordinates.y}]`,
-    );
+    domManager.displayAttackMessage(this.#attacker.name, this.#receiver.name, coordinates);
 
     if (this.#checkWinning()) {
       this.#handleWinning();
@@ -54,8 +52,19 @@ export default class GameController {
     this.#swapAttacker();
   }
 
+  #displayCoordinates(player, coordinates) {
+    if (player !== this.#receiver) {
+      return;
+    }
+    domManager.displayCoordinatesFeedback(coordinates);
+  }
+
   #initializePlayerBox(player) {
-    domManager.initializePlayerBox(player, this.#handleAttack.bind(this, player));
+    domManager.initializePlayerBox(
+      player,
+      this.#handleAttack.bind(this, player),
+      this.#displayCoordinates.bind(this, player),
+    );
   }
 
   startGame() {
