@@ -7,6 +7,7 @@ function delay(seconds) {
 export default class GameController {
   #attacker;
   #receiver;
+  #processing = false;
 
   constructor(playerOne, playerTwo) {
     this.playerOne = playerOne;
@@ -32,15 +33,15 @@ export default class GameController {
   }
 
   async #handleAttack(player, coordinates) {
-    if (player !== this.#receiver || player.isAttackedAt(coordinates)) {
+    if (player !== this.#receiver || player.isAttackedAt(coordinates) || this.#processing) {
       return;
     }
 
+    this.#processing = true;
     domManager.displayFeedbackMessage('Performing the attack...');
-    domManager.clearCurrentTurnMessage();
-    await delay(0.25);
-
     player.receiveAttack(coordinates);
+    await delay(0.25);
+    
     domManager.receiveAttack(player.getId(), coordinates);
     domManager.displayAttackMessage(this.#attacker.name, this.#receiver.name, coordinates);
 
@@ -53,6 +54,8 @@ export default class GameController {
     if (!player.hasShipAt(coordinates)) {
       this.#swapAttacker();
     }
+
+    this.#processing = false;
   }
 
   #displayCoordinates(player, coordinates) {
