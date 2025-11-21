@@ -84,4 +84,20 @@ export default class Gameboard {
     });
     return flag;
   }
+
+  hasShipAt(coordinates) {
+    const { x, y } = coordinates;
+    if (!this.#isValidCoordinate(x, y)) {
+      throw Error('Attempt to access an invalid coordinate');
+    }
+    return this.#board[x][y].hasShip();
+  }
+
+  isAttackedAt(coordinates) {
+    const { x, y } = coordinates;
+    if (!this.#isValidCoordinate(x, y)) {
+      throw Error('Attempt to access an invalid coordinate');
+    }
+    return this.#board[x][y].isAttacked();
+  }
 }
