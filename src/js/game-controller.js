@@ -49,7 +49,10 @@ export default class GameController {
       return;
     }
 
-    this.#swapAttacker();
+    // if the player misses a shot, pass the turn to the other player
+    if (!player.hasShipAt(coordinates)) {
+      this.#swapAttacker();
+    }
   }
 
   #displayCoordinates(player, coordinates) {
