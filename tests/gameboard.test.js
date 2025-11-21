@@ -162,4 +162,72 @@ describe('Gameboard', () => {
       expect(gameboard.areAllShipsSunk()).toBeTruthy();
     });
   });
+
+  describe('hasShipAt()', () => {
+    let ship;
+
+    beforeEach(() => {
+      ship = new Ship(1);
+    });
+
+    test('should throw an Error if any coordinate is invalid', () => {
+      expect(() => {
+        gameboard.hasShipAt({ x: -1, y: 0 });
+      }).toThrow(Error);
+
+      expect(() => {
+        gameboard.hasShipAt({ x: 0, y: -1 });
+      }).toThrow(Error);
+
+      expect(() => {
+        gameboard.hasShipAt({ x: maxX + 1, y: 0 });
+      }).toThrow(Error);
+
+      expect(() => {
+        gameboard.hasShipAt({ x: 0, y: maxY + 1 });
+      }).toThrow(Error);
+    });
+
+    test('should return false if that position does not have a ship', () => {
+      const [x, y] = [2, 3];
+      expect(gameboard.hasShipAt({ x, y })).toBeFalsy();
+    });
+
+    test('should return true if that position has a ship', () => {
+      const [x, y] = [2, 3];
+      gameboard.placeShip(ship, { x, y });
+      expect(gameboard.hasShipAt({ x, y })).toBeTruthy();
+    });
+  });
+
+  describe('isAttackedAt()', () => {
+    test('should throw an Error if any coordinate is invalid', () => {
+      expect(() => {
+        gameboard.isAttackedAt({ x: -1, y: 0 });
+      }).toThrow(Error);
+
+      expect(() => {
+        gameboard.isAttackedAt({ x: 0, y: -1 });
+      }).toThrow(Error);
+
+      expect(() => {
+        gameboard.isAttackedAt({ x: maxX + 1, y: 0 });
+      }).toThrow(Error);
+
+      expect(() => {
+        gameboard.isAttackedAt({ x: 0, y: maxY + 1 });
+      }).toThrow(Error);
+    });
+
+    test('should return false if that position has not been attacked', () => {
+      const [x, y] = [2, 3];
+      expect(gameboard.isAttackedAt({ x, y })).toBeFalsy();
+    });
+
+    test('should return true if that position has been attacked', () => {
+      const [x, y] = [2, 3];
+      gameboard.receiveAttack({ x, y });
+      expect(gameboard.isAttackedAt({ x, y })).toBeTruthy();
+    });
+  });
 });
