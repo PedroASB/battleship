@@ -27,8 +27,11 @@ export default class Player {
   }
 
   isAttackedAt(coordinates) {
-    const { x, y } = coordinates;
-    return this.#gameboard.getBoard()[x][y].isAttacked();
+    return this.#gameboard.isAttackedAt(coordinates);
+  }
+
+  hasShipAt(coordinates) {
+    return this.#gameboard.hasShipAt(coordinates);
   }
 
   areAllShipsSunk() {
