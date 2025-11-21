@@ -16,8 +16,8 @@ function createSquare() {
 }
 
 export default class Gameboard {
-  static MAX_X = 10;
-  static MAX_Y = 10;
+  static MAX_X = 9;
+  static MAX_Y = 9;
   #board;
   #ships;
 
@@ -28,16 +28,16 @@ export default class Gameboard {
 
   #initializeBoard() {
     this.#board = Array(Gameboard.MAX_X);
-    for (let i = 0; i < Gameboard.MAX_X; i++) {
+    for (let i = 0; i <= Gameboard.MAX_X; i++) {
       this.#board[i] = Array(Gameboard.MAX_Y);
-      for (let j = 0; j < Gameboard.MAX_Y; j++) {
+      for (let j = 0; j <= Gameboard.MAX_Y; j++) {
         this.#board[i][j] = createSquare();
       }
     }
   }
 
   #isValidCoordinate(x, y) {
-    return x >= 0 && x < Gameboard.MAX_X && y >= 0 && y < Gameboard.MAX_Y;
+    return x >= 0 && x <= Gameboard.MAX_X && y >= 0 && y <= Gameboard.MAX_Y;
   }
 
   getBoard() {
