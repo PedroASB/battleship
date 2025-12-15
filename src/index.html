@@ -11,46 +11,114 @@
     </header>
 
     <main>
-      <div id="feedback-section">
-        <p class="message"></p>
-        <p class="turn"></p>
-        <p class="coordinates"></p>
-      </div>
+      <div id="initial-page" class="page" hidden="true">
+        <h3 id="subtitle">Get yourself prepared for the Battleship!</h3>
 
-      <div id="players-section"></div>
+        <p id="description">
+          This is the classic strategic guessing game where players hide their fleet and take turns
+          targeting coordinates to find and sink the opponent's ships.
+        </p>
 
-      <template id="player-box-template">
-        <div class="player-box">
-          <h2 class="title"><span class="name"></span>'s board</h2>
-          <div class="grid">
-            <div class="y-indexes indexes">
-              <div>A</div>
-              <div>B</div>
-              <div>C</div>
-              <div>D</div>
-              <div>E</div>
-              <div>F</div>
-              <div>G</div>
-              <div>H</div>
-              <div>I</div>
-              <div>J</div>
-            </div>
-            <div class="x-indexes indexes">
-              <div>1</div>
-              <div>2</div>
-              <div>3</div>
-              <div>4</div>
-              <div>5</div>
-              <div>6</div>
-              <div>7</div>
-              <div>8</div>
-              <div>9</div>
-              <div>10</div>
-            </div>
-            <div class="board"></div>
+        <div class="gamemodes">
+          <div class="gamemode" id="two-player-mode">
+            <form method="dialog" id="players-form">
+              <div class="wrapper">
+                <label for="player-one-name">
+                  <div>Player 1's name:</div>
+                  <input
+                    type="text"
+                    name="player-one-name"
+                    id="player-one-name"
+                    autocomplete="off"
+                    spellcheck="false"
+                    maxlength="25"
+                    placeholder="Player 1"
+                  />
+                </label>
+
+                <label for="player-two-name">
+                  <div>Player 2's name:</div>
+                  <input
+                    type="text"
+                    name="player-two-name"
+                    id="player-two-name"
+                    autocomplete="off"
+                    spellcheck="false"
+                    maxlength="25"
+                    placeholder="Player 2"
+                  />
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                class="start-game-btn"
+                id="play-vs-friend-btn"
+                title="Coming soon..."
+              >
+                <img class="icon" src="./assets/icons/friend-icon.svg" alt="Friend Icon" />
+                <div class="text">
+                  <div class="play-vs">Play vs.</div>
+                  <div class="opponent">Friend</div>
+                </div>
+              </button>
+            </form>
+          </div>
+          <div>Or</div>
+          <div class="gamemode" id="computer-mode">
+            <button type="button" class="start-game-btn" id="play-vs-computer-btn">
+              <img class="icon" src="./assets/icons/robot-icon.svg" alt="Robot Icon" />
+              <div class="text">
+                <div class="play-vs">Play vs.</div>
+                <div class="opponent">Computer</div>
+              </div>
+            </button>
           </div>
         </div>
-      </template>
+      </div>
+
+      <div id="gameplay-page" class="page" hidden="false">
+        <div id="feedback-section">
+          <p class="message"></p>
+          <p class="turn"></p>
+          <p class="coordinates"></p>
+        </div>
+
+        <div id="players-section"></div>
+
+        <template id="player-box-template">
+          <div class="player-box">
+            <h2 class="title"><span class="name"></span>'s board</h2>
+            <div class="grid">
+              <div class="y-indexes indexes">
+                <div>A</div>
+                <div>B</div>
+                <div>C</div>
+                <div>D</div>
+                <div>E</div>
+                <div>F</div>
+                <div>G</div>
+                <div>H</div>
+                <div>I</div>
+                <div>J</div>
+              </div>
+              <div class="x-indexes indexes">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+              </div>
+              <div class="board"></div>
+            </div>
+          </div>
+        </template>
+      </div>
     </main>
 
     <footer>

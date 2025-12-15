@@ -1,5 +1,6 @@
 import './css/reset.css';
 import './css/style.css';
+import * as domManager from './js/dom-manager.js';
 import GameController from './js/game-controller.js';
 import Player from './js/player.js';
 import Ship from './js/ship.js';
@@ -108,12 +109,21 @@ function placeSampleShips2(player) {
   });
 }
 
-const playerOne = new Player('Player 1');
-const playerTwo = new Player('Player 2');
+// Program begin
+domManager.displayInitialPage();
+const playVsComputerButton = domManager.getPlayVsComputerButton();
 
-placeSampleShips1(playerOne);
-placeSampleShips2(playerTwo);
+playVsComputerButton.addEventListener('click', () => {
+  const player = new Player('Player');
+  const computer = new Player('Computer');
 
-const gameController = new GameController(playerOne, playerTwo);
+  placeSampleShips1(player);
+  placeSampleShips2(computer);
 
-gameController.startGame();
+  const gameController = new GameController(player, computer);
+
+  domManager.displayGameplayPage();
+  gameController.startGame();
+});
+
+// domManager.displayGameplayPage();

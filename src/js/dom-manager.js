@@ -1,3 +1,33 @@
+function displayPage(id) {
+  const pages = Array.from(document.querySelectorAll('.page'));
+  pages.forEach((page) => {
+    if (page.id === id) page.setAttribute('hidden', 'false');
+    else page.setAttribute('hidden', 'true');
+  });
+}
+
+/**
+ * Initial page
+ */
+export function displayInitialPage() {
+  displayPage('initial-page');
+}
+
+export function getPlayVsComputerButton() {
+  return document.querySelector('#play-vs-computer-btn');
+}
+
+export function getPlayVsFriendButton() {
+  return document.querySelector('#play-vs-friend-btn');
+}
+
+/**
+ * Gameplay page
+ */
+export function displayGameplayPage() {
+  displayPage('gameplay-page');
+}
+
 function updateBoard(player, squareClickCallback, squareHoverCallback) {
   const boardDiv = document.getElementById(player.getId()).querySelector('.board');
   boardDiv.innerHTML = '';
