@@ -9,7 +9,7 @@
 ## Description
 
 This is a web version of the classic Battleship game.
-  
+
 _(**Status**: under development)_
 
 ## About the Project
