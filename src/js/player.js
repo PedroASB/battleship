@@ -4,10 +4,30 @@ export default class Player {
   #id;
   #gameboard;
 
-  constructor(name) {
+  constructor(name, type) {
     this.name = name;
+    this.type = type;
     this.#gameboard = new Gameboard();
     this.#id = crypto.randomUUID();
+  }
+
+  get type() {
+    return this._type;
+  }
+
+  set type(type) {
+    if (type !== 'real' && type !== 'computer') {
+      throw Error("Player.type must be 'real' or 'computer'");
+    }
+    this._type = type;
+  }
+
+  isComputer() {
+    return this.type === 'computer';
+  }
+
+  isReal() {
+    return this.type === 'real';
   }
 
   getId() {
