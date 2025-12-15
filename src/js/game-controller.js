@@ -1,17 +1,40 @@
 import * as domManager from './dom-manager.js';
+import Gameboard from './gameboard.js';
 
 function delay(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 export default class GameController {
   #attacker;
   #receiver;
   #processing = false;
+  #randomAttacks = null;
 
   constructor(playerOne, playerTwo) {
     this.playerOne = playerOne;
     this.playerTwo = playerTwo;
+    if (playerOne.isComputer() || playerTwo.isComputer()) {
+      this.generateComputerAttacks();
+    }
+  }
+
+  generateComputerAttacks() {
+    this.#randomAttacks = [];
+    for (let x = 0; x <= Gameboard.MAX_X; x++) {
+      for (let y = 0; y <= Gameboard.MAX_Y; y++) {
+        this.#randomAttacks.push({ x: x, y: y });
+      }
+    }
+    shuffleArray(this.#randomAttacks);
   }
 
   #swapAttacker() {
@@ -32,6 +55,11 @@ export default class GameController {
     domManager.showWinningMessage(this.#attacker.name); // temporary functionality
   }
 
+  #handleComputerAttack() {
+    const coordinates = this.#randomAttacks.pop();
+    this.#handleAttack(this.#receiver, coordinates);
+  }
+
   async #handleAttack(player, coordinates) {
     if (player !== this.#receiver || player.isAttackedAt(coordinates) || this.#processing) {
       return;
@@ -40,8 +68,8 @@ export default class GameController {
     this.#processing = true;
     domManager.displayFeedbackMessage('Performing the attack...');
     player.receiveAttack(coordinates);
-    await delay(0.25);
-    
+    await delay(1);
+
     domManager.receiveAttack(player.getId(), coordinates);
     domManager.displayAttackMessage(this.#attacker.name, this.#receiver.name, coordinates);
 
@@ -56,12 +84,15 @@ export default class GameController {
     }
 
     this.#processing = false;
+
+    // if the next attacker is the computer, call a function to calculate the attack
+    if (this.#attacker.isComputer()) {
+      this.#handleComputerAttack();
+    }
   }
 
   #displayCoordinates(player, coordinates) {
-    if (player !== this.#receiver) {
-      return;
-    }
+    if (player !== this.#receiver) return;
     domManager.displayCoordinatesFeedback(coordinates);
   }
 
@@ -80,6 +111,7 @@ export default class GameController {
 
     this.#attacker = this.playerOne;
     this.#receiver = this.playerTwo;
+    this.#processing = false;
 
     domManager.setTarget(this.#receiver.getId());
     domManager.displayFeedbackMessage(`The battleship has started!`);

@@ -114,16 +114,17 @@ domManager.displayInitialPage();
 const playVsComputerButton = domManager.getPlayVsComputerButton();
 
 playVsComputerButton.addEventListener('click', () => {
-  const player = new Player('Player');
-  const computer = new Player('Computer');
+  const player = new Player('Player', 'real');
+  const computer = new Player('Computer', 'computer');
 
   placeSampleShips1(player);
   placeSampleShips2(computer);
 
   const gameController = new GameController(player, computer);
 
-  domManager.displayGameplayPage();
   gameController.startGame();
+  domManager.hideFleet(computer.getId());
+  domManager.displayGameplayPage();
 });
 
 // domManager.displayGameplayPage();
