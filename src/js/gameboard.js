@@ -36,7 +36,7 @@ export default class Gameboard {
     }
   }
 
-  #isValidCoordinate(x, y) {
+  isValidCoordinate(x, y) {
     return x >= 0 && x <= Gameboard.MAX_X && y >= 0 && y <= Gameboard.MAX_Y;
   }
 
@@ -47,7 +47,7 @@ export default class Gameboard {
   placeShip(ship, coordinates) {
     const { x, y } = coordinates;
 
-    if (!this.#isValidCoordinate(x, y)) {
+    if (!this.isValidCoordinate(x, y)) {
       throw Error('Attempt to place a ship in an invalid coordinate');
     }
 
@@ -62,7 +62,7 @@ export default class Gameboard {
   receiveAttack(coordinates) {
     const { x, y } = coordinates;
 
-    if (!this.#isValidCoordinate(x, y)) {
+    if (!this.isValidCoordinate(x, y)) {
       throw Error('Attempt to attack an invalid coordinate');
     }
 
@@ -87,7 +87,7 @@ export default class Gameboard {
 
   hasShipAt(coordinates) {
     const { x, y } = coordinates;
-    if (!this.#isValidCoordinate(x, y)) {
+    if (!this.isValidCoordinate(x, y)) {
       throw Error('Attempt to access an invalid coordinate');
     }
     return this.#board[x][y].hasShip();
@@ -95,7 +95,7 @@ export default class Gameboard {
 
   isAttackedAt(coordinates) {
     const { x, y } = coordinates;
-    if (!this.#isValidCoordinate(x, y)) {
+    if (!this.isValidCoordinate(x, y)) {
       throw Error('Attempt to access an invalid coordinate');
     }
     return this.#board[x][y].isAttacked();
