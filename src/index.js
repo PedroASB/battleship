@@ -117,14 +117,25 @@ playVsComputerButton.addEventListener('click', () => {
   const player = new Player('Player', 'real');
   const computer = new Player('Computer', 'computer');
 
-  placeSampleShips1(player);
+  // placeSampleShips1(player);
   placeSampleShips2(computer);
 
   const gameController = new GameController(player, computer);
 
-  gameController.startGame();
-  domManager.hideFleet(computer.getId());
+  domManager.clearPlayersSection();
+  domManager.addPlayerBox(player);
   domManager.displayGameplayPage();
-});
 
-// domManager.displayGameplayPage();
+  // #TODO initialize boards -> hide computer's fleet (to set the class) -> begin ship placement
+  gameController.beginShipPlacement(player);
+
+  domManager.addConfirmFleetButton(player.getId(), () => {
+    const readyFleet = gameController.confirmFleet();
+    if (readyFleet) {
+      domManager.removeConfirmFleetButton(player.getId());
+      domManager.addPlayerBox(computer);
+      domManager.hideFleet(computer.getId());
+      gameController.startBattle();
+    }
+  });
+});

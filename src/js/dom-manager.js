@@ -28,7 +28,7 @@ export function displayGameplayPage() {
   displayPage('gameplay-page');
 }
 
-function updateBoard(player, squareClickCallback, squareHoverCallback) {
+export function updateBoardPlay(player, { squareClickCallback, squareHoverCallback }) {
   const boardDiv = document.getElementById(player.getId()).querySelector('.board');
   boardDiv.innerHTML = '';
 
@@ -49,13 +49,13 @@ function updateBoard(player, squareClickCallback, squareHoverCallback) {
       const coordinates = { x, y };
 
       squareDiv.addEventListener('click', () => {
-        squareClickCallback(coordinates);
+        if (squareClickCallback) squareClickCallback(coordinates);
       });
 
       squareDiv.addEventListener('mouseenter', () => {
-        const { x, y } = getFriendlyCoordinates(coordinates);
-        squareDiv.title = `${x} ${y}`;
-        squareHoverCallback({ x, y });
+        const friendlyCoordinates = getFriendlyCoordinates(coordinates);
+        squareDiv.title = `${friendlyCoordinates.x} ${friendlyCoordinates.y}`;
+        if (squareHoverCallback) squareHoverCallback(coordinates);
       });
 
       squareDiv.addEventListener('mouseleave', clearCoordinatesFeedback);
@@ -67,7 +67,7 @@ function updateBoard(player, squareClickCallback, squareHoverCallback) {
   });
 }
 
-export function initializePlayerBox(player, squareClickCallback, squareHoverCallback) {
+export function addPlayerBox(player) {
   const playersSection = document.querySelector('#players-section');
   const playerBoxTemplate = document.querySelector('#player-box-template');
   const playerBox = playerBoxTemplate.content.cloneNode(true).querySelector('.player-box');
@@ -75,13 +75,100 @@ export function initializePlayerBox(player, squareClickCallback, squareHoverCall
   playerBox.id = player.getId();
   playerBox.querySelector('.name').textContent = player.name;
   playersSection.appendChild(playerBox);
-
-  updateBoard(player, squareClickCallback, squareHoverCallback);
 }
 
 export function clearPlayersSection() {
   const playersSection = document.querySelector('#players-section');
   playersSection.innerHTML = '';
+}
+
+export function updateBoardPlaceShips(
+  player,
+  { squareClickCallback, squareHoverCallback, shiftKeyDownCallback },
+) {
+  const boardDiv = document.getElementById(player.getId()).querySelector('.board');
+  boardDiv.innerHTML = '';
+
+  let x, y;
+
+  x = 0;
+  player.getBoard().forEach((row) => {
+    y = 0;
+    row.forEach((square) => {
+      const squareDiv = document.createElement('div');
+
+      squareDiv.classList.add('square');
+      squareDiv.setAttribute('attacked', square.isAttacked());
+      squareDiv.setAttribute('ship', square.hasShip());
+      squareDiv.dataset.position = `${x},${y}`;
+      squareDiv.innerHTML = `<div class="attack-mark"></div>`;
+
+      const coordinates = { x, y };
+
+      squareDiv.addEventListener('click', () => {
+        if (squareClickCallback) squareClickCallback(player, coordinates);
+      });
+
+      squareDiv.addEventListener('mouseenter', () => {
+        const friendlyCoordinates = getFriendlyCoordinates(coordinates);
+        squareDiv.title = `${friendlyCoordinates.x} ${friendlyCoordinates.y}`;
+        if (squareHoverCallback) squareHoverCallback(player, coordinates);
+      });
+
+      squareDiv.addEventListener('mouseleave', clearCoordinatesFeedback);
+
+      boardDiv.appendChild(squareDiv);
+      y++;
+    });
+    x++;
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Shift') shiftKeyDownCallback();
+  });
+}
+
+export function placeShipAtSquare(playerId, coordinates) {
+  const boardDiv = document.getElementById(playerId).querySelector('.board');
+  const square = boardDiv.querySelector(
+    `.square[data-position="${coordinates.x},${coordinates.y}"]`,
+  );
+  square.setAttribute('ship', 'true');
+}
+
+export function addConfirmFleetButton(playerId, clickCallback) {
+  const playerBox = document.getElementById(playerId);
+  const button = document.createElement('button');
+
+  button.classList.add('confirm-fleet');
+  button.innerText = 'Confirm Fleet';
+
+  button.addEventListener('click', () => {
+    if (clickCallback) clickCallback();
+  });
+
+  playerBox.appendChild(button);
+}
+
+export function removeConfirmFleetButton(playerId) {
+  const playerBox = document.getElementById(playerId);
+  const button = playerBox.querySelector('button');
+  button.remove();
+}
+
+export function highlightShipPlacement(playerId, coordinatesArray, isAllowed) {
+  const boardDiv = document.getElementById(playerId).querySelector('.board');
+  const squaresArray = [...boardDiv.querySelectorAll('.square')];
+
+  squaresArray.forEach((square) => {
+    square.removeAttribute('preview');
+  });
+
+  coordinatesArray.forEach((coordinates) => {
+    const { x, y } = coordinates;
+    const square = boardDiv.querySelector(`.square[data-position="${x},${y}"]`);
+    if (square) square.setAttribute('preview', isAllowed ? 'allowed' : 'not-allowed');
+  });
 }
 
 export function receiveAttack(playerId, coordinates) {
@@ -136,7 +223,7 @@ export function clearCurrentTurnMessage() {
   turnMessage.innerHTML = '';
 }
 
-function getFriendlyCoordinates(coordinates) {
+export function getFriendlyCoordinates(coordinates) {
   return { x: String.fromCharCode(65 + (coordinates.x % 26)), y: coordinates.y + 1 };
 }
 

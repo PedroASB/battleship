@@ -1,4 +1,5 @@
 import * as domManager from './dom-manager.js';
+import Ship from './ship.js';
 import Gameboard from './gameboard.js';
 
 function delay(seconds) {
@@ -18,6 +19,9 @@ export default class GameController {
   #receiver;
   #processing = false;
   #randomAttacks = null;
+  #fleetTemplate;
+  #shipsQueue = [];
+  #currentPlacementAxis = 'x';
 
   constructor(playerOne, playerTwo) {
     this.playerOne = playerOne;
@@ -25,6 +29,14 @@ export default class GameController {
     if (playerOne.isComputer() || playerTwo.isComputer()) {
       this.generateComputerAttacks();
     }
+
+    this.#fleetTemplate = [
+      { class: 'Carrier', length: 5 },
+      { class: 'Battleship', length: 4 },
+      { class: 'Cruiser', length: 3 },
+      { class: 'Submarine', length: 3 },
+      { class: 'Destroyer', length: 2 },
+    ];
   }
 
   generateComputerAttacks() {
@@ -93,28 +105,153 @@ export default class GameController {
 
   #displayCoordinates(player, coordinates) {
     if (player !== this.#receiver) return;
-    domManager.displayCoordinatesFeedback(coordinates);
+    const friendlyCoordinates = domManager.getFriendlyCoordinates(coordinates);
+    domManager.displayCoordinatesFeedback(friendlyCoordinates);
   }
 
-  #initializePlayerBox(player) {
-    domManager.initializePlayerBox(
-      player,
-      this.#handleAttack.bind(this, player),
-      this.#displayCoordinates.bind(this, player),
-    );
+  /**
+   * Ship placement
+   */
+
+  #switchCurrentPlacementAxis() {
+    this.#currentPlacementAxis = this.#currentPlacementAxis === 'x' ? 'y' : 'x';
   }
 
-  startGame() {
-    domManager.clearPlayersSection();
-    this.#initializePlayerBox(this.playerOne);
-    this.#initializePlayerBox(this.playerTwo);
+  #getShipToBePlacedLength() {
+    return this.#shipsQueue.length > 0 ? this.#shipsQueue.at(0).getLength() : null;
+  }
 
+  #getShipToBePlacedClass() {
+    return this.#shipsQueue.length > 0 ? this.#shipsQueue.at(0).getClass() : null;
+  }
+
+  #displayCurrentShipToPlace(player) {
+    if (this.#shipsQueue.length > 0) {
+      domManager.displayFeedbackMessage(
+        `${player.name}, prepare your fleet! Current ship to place: ${this.#getShipToBePlacedClass()}. Use Shift to switch between X and Y axises.`,
+      );
+    }
+  }
+
+  #generateCoordinatesArray(coordinates) {
+    const coordinatesArray = [];
+    if (this.#currentPlacementAxis === 'x') {
+      for (let i = 0; i < this.#getShipToBePlacedLength(); i++) {
+        coordinatesArray.push({ x: coordinates.x + i, y: coordinates.y });
+      }
+    } else if (this.#currentPlacementAxis === 'y') {
+      for (let i = 0; i < this.#getShipToBePlacedLength(); i++) {
+        coordinatesArray.push({ x: coordinates.x, y: coordinates.y + i });
+      }
+    }
+    return coordinatesArray;
+  }
+
+  #isAllowedShipPlacement(player, coordinatesArray) {
+    let isAllowed = true;
+    const isValidCoordinate = new Gameboard().isValidCoordinate; // TODO: isValidCoordinate should be a static method of Gameboard
+
+    coordinatesArray.forEach((coordinate) => {
+      if (!isValidCoordinate(coordinate.x, coordinate.y) || player.hasShipAt(coordinate))
+        isAllowed = false;
+    });
+
+    return isAllowed;
+  }
+
+  #shipPlacementHover(player, coordinates) {
+    const coordinatesArray = this.#generateCoordinatesArray(coordinates);
+    const isAllowed = this.#isAllowedShipPlacement(player, coordinatesArray);
+    domManager.highlightShipPlacement(player.getId(), coordinatesArray, isAllowed);
+  }
+
+  #shipPlacementConfirm(player, coordinates) {
+    if (this.#shipsQueue.length === 0) {
+      return;
+    }
+
+    const coordinatesArray = this.#generateCoordinatesArray(coordinates);
+    const isAllowed = this.#isAllowedShipPlacement(player, coordinatesArray);
+    if (!isAllowed) return;
+
+    const ship = this.#shipsQueue.shift();
+
+    coordinatesArray.forEach((coordinate) => {
+      player.placeShip(ship, coordinate);
+      domManager.placeShipAtSquare(player.getId(), coordinate);
+    });
+
+    this.#displayCurrentShipToPlace(player);
+  }
+
+  beginShipPlacement(player) {
+    this.#currentPlacementAxis = 'x';
+    this.#shipsQueue = [];
+
+    this.#fleetTemplate.forEach((shipTemplate) => {
+      const ship = new Ship(shipTemplate.length, shipTemplate.class);
+      this.#shipsQueue.push(ship);
+    });
+
+    this.#setBoardToPlaceShips(player);
+    this.#displayCurrentShipToPlace(player);
+  }
+
+  /**
+   * Board settings
+   */
+
+  #setBoardToPlaceShips(player) {
+    domManager.updateBoardPlaceShips(player, {
+      squareHoverCallback: this.#shipPlacementHover.bind(this),
+      squareClickCallback: this.#shipPlacementConfirm.bind(this),
+      shiftKeyDownCallback: () => {
+        this.#switchCurrentPlacementAxis();
+        this.#shipPlacementHover(player, { x: 0, y: 0 }); // TODO: keep at the same position after switching axis
+      },
+    });
+  }
+
+  #setBoardToPlay(player) {
+    domManager.updateBoardPlay(player, {
+      squareHoverCallback: this.#displayCoordinates.bind(this, player),
+      squareClickCallback: this.#handleAttack.bind(this, player),
+    });
+  }
+
+  /**
+   * Confirm fleet button handler
+   */
+
+  confirmFleet() {
+    if (this.#shipsQueue.length > 1) {
+      alert(`There are ${this.#shipsQueue.length} remaining ships to place.`);
+      return false;
+    }
+    if (this.#shipsQueue.length === 1) {
+      alert(`There is 1 remaining ship to place.`);
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Start game
+   */
+
+  startBattle() {
     this.#attacker = this.playerOne;
     this.#receiver = this.playerTwo;
-    this.#processing = false;
+
+    this.#setBoardToPlay(this.playerOne);
+    this.#setBoardToPlay(this.playerTwo);
 
     domManager.setTarget(this.#receiver.getId());
     domManager.displayFeedbackMessage(`The battleship has started!`);
     domManager.displayCurrentTurnMessage(this.#attacker.name);
+
+    console.log(this.playerOne);
+    console.log(this.playerTwo);
   }
 }
