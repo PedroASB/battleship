@@ -95,14 +95,10 @@ main {
       width: 40px;
     }
 
-    &:hover#play-vs-computer-btn {
+    &:hover {
       background-color: #dde6f1;
       border-bottom-color: #b0b6c2;
       cursor: pointer;
-    }
-
-    &:hover#play-vs-friend-btn {
-      cursor: not-allowed;
     }
   }
 

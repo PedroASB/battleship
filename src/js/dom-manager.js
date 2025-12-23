@@ -6,6 +6,24 @@ function displayPage(id) {
   });
 }
 
+// keeps track of the current shift key down handler function
+let shiftKeyDownHandler = null;
+
+function removeShiftKeyDownListener() {
+  if (shiftKeyDownHandler) document.removeEventListener('keydown', shiftKeyDownHandler);
+  shiftKeyDownHandler = null;
+}
+
+function setShiftKeyDownListener(shiftKeyDownCallback) {
+  removeShiftKeyDownListener();
+
+  shiftKeyDownHandler = function (event) {
+    if (event.key === 'Shift') shiftKeyDownCallback();
+  };
+
+  document.addEventListener('keydown', shiftKeyDownHandler);
+}
+
 /**
  * Initial page
  */
@@ -19,6 +37,17 @@ export function getPlayVsComputerButton() {
 
 export function getPlayVsFriendButton() {
   return document.querySelector('#play-vs-friend-btn');
+}
+
+export function getTwoPlayersNames() {
+  const form = document.getElementById('players-form');
+  const formData = new FormData(form);
+
+  const playerOneName = formData.get('player-one-name') || 'Player 1';
+  const playerTwoName = formData.get('player-two-name') || 'Player 2';
+
+  form.reset();
+  return { playerOneName, playerTwoName };
 }
 
 /**
@@ -77,6 +106,11 @@ export function addPlayerBox(player) {
   playersSection.appendChild(playerBox);
 }
 
+export function removePlayerBox(playerId) {
+  const playerBox = document.getElementById(playerId);
+  playerBox.remove();
+}
+
 export function clearPlayersSection() {
   const playersSection = document.querySelector('#players-section');
   playersSection.innerHTML = '';
@@ -123,9 +157,7 @@ export function updateBoardPlaceShips(
     x++;
   });
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Shift') shiftKeyDownCallback();
-  });
+  setShiftKeyDownListener(shiftKeyDownCallback);
 }
 
 export function placeShipAtSquare(playerId, coordinates) {

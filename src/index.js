@@ -110,14 +110,14 @@ function placeSampleShips2(player) {
 }
 
 // Program begin
-domManager.displayInitialPage();
 const playVsComputerButton = domManager.getPlayVsComputerButton();
+const getPlayVsFriendButton = domManager.getPlayVsFriendButton();
+domManager.displayInitialPage();
 
 playVsComputerButton.addEventListener('click', () => {
   const player = new Player('Player', 'real');
   const computer = new Player('Computer', 'computer');
 
-  // placeSampleShips1(player);
   placeSampleShips2(computer);
 
   const gameController = new GameController(player, computer);
@@ -126,7 +126,6 @@ playVsComputerButton.addEventListener('click', () => {
   domManager.addPlayerBox(player);
   domManager.displayGameplayPage();
 
-  // #TODO initialize boards -> hide computer's fleet (to set the class) -> begin ship placement
   gameController.beginShipPlacement(player);
 
   domManager.addConfirmFleetButton(player.getId(), () => {
@@ -138,4 +137,54 @@ playVsComputerButton.addEventListener('click', () => {
       gameController.startBattle();
     }
   });
+});
+
+getPlayVsFriendButton.addEventListener('click', () => {
+  const { playerOneName, playerTwoName } = domManager.getTwoPlayersNames();
+
+  const playerOne = new Player(playerOneName, 'real');
+  const playerTwo = new Player(playerTwoName, 'real');
+
+  const gameController = new GameController(playerOne, playerTwo);
+
+  domManager.clearPlayersSection();
+  domManager.addPlayerBox(playerOne);
+  domManager.displayGameplayPage();
+
+  // START
+  function start() {
+    domManager.removePlayerBox(playerTwo.getId());
+    domManager.addPlayerBox(playerOne);
+    domManager.addPlayerBox(playerTwo);
+    // domManager.removeConfirmFleetButton(playerTwo.getId());
+
+    domManager.hideFleet(playerOne.getId());
+    domManager.hideFleet(playerTwo.getId());
+    gameController.startBattle();
+  }
+
+  // PLAYER ONE
+  gameController.beginShipPlacement(playerOne);
+
+  domManager.addConfirmFleetButton(playerOne.getId(), () => {
+    const readyFleet = gameController.confirmFleet();
+    if (readyFleet) {
+      next();
+    }
+  });
+
+  // PLAYER TWO
+  function next() {
+    domManager.removePlayerBox(playerOne.getId());
+    // domManager.removeConfirmFleetButton(playerOne.getId());
+    domManager.addPlayerBox(playerTwo);
+    gameController.beginShipPlacement(playerTwo);
+
+    domManager.addConfirmFleetButton(playerTwo.getId(), () => {
+      const readyFleet = gameController.confirmFleet();
+      if (readyFleet) {
+        start();
+      }
+    });
+  }
 });
