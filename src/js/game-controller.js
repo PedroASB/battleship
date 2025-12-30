@@ -32,7 +32,7 @@ export default class GameController {
     this.#randomAttacks = [];
     for (let x = 0; x <= Gameboard.MAX_X; x++) {
       for (let y = 0; y <= Gameboard.MAX_Y; y++) {
-        this.#randomAttacks.push({ x: x, y: y });
+        this.#randomAttacks.push({ x, y });
       }
     }
     shuffleArray(this.#randomAttacks);

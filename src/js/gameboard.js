@@ -28,10 +28,10 @@ export default class Gameboard {
 
   #initializeBoard() {
     this.#board = Array(Gameboard.MAX_X);
-    for (let i = 0; i <= Gameboard.MAX_X; i++) {
-      this.#board[i] = Array(Gameboard.MAX_Y);
-      for (let j = 0; j <= Gameboard.MAX_Y; j++) {
-        this.#board[i][j] = createSquare();
+    for (let x = 0; x <= Gameboard.MAX_X; x++) {
+      this.#board[x] = Array(Gameboard.MAX_Y);
+      for (let y = 0; y <= Gameboard.MAX_Y; y++) {
+        this.#board[x][y] = createSquare();
       }
     }
   }
