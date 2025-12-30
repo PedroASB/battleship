@@ -199,6 +199,8 @@ main {
 }
 
 .player-box {
+  padding: 16px;
+
   .title {
     text-align: center;
     margin: 16px 0;
@@ -254,6 +256,7 @@ main {
         width: 50%;
         height: 50%;
         border-radius: 50%;
+        background-color: transparent;
       }
     }
 
@@ -279,6 +282,10 @@ main {
   }
 
   .board.on-play {
+    .attack-mark {
+      transition: background-color 0.5s ease;
+    }
+
     .square[ship='false'][attacked='true'] .attack-mark {
       background-color: var(--attack-mark-miss-color);
     }
@@ -300,11 +307,8 @@ main {
         z-index: 1;
       }
 
-      /* .square[attacked='true']:hover {
-      } */
-
       .square[attacked='false'] {
-        cursor: pointer;
+        cursor: crosshair;
       }
 
       .square[attacked='true'] {
@@ -313,6 +317,8 @@ main {
     }
 
     &:not(.targetable) {
+      opacity: 60%;
+
       .square {
         cursor: not-allowed;
       }
