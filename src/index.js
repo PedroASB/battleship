@@ -27,7 +27,7 @@ function startPlayerVsComputer() {
   gameController = new GameController(player, computer);
 
   domManager.clearPlayersSection();
-  domManager.addPlayerBox(player);
+  domManager.addPlayerBox(player.name, player.getId());
   domManager.displayGameplayPage();
 
   gameController.beginShipPlacement(player);
@@ -36,7 +36,7 @@ function startPlayerVsComputer() {
     const readyFleet = gameController.confirmFleet();
     if (readyFleet) {
       domManager.removeConfirmFleetButton(player.getId());
-      domManager.addPlayerBox(computer);
+      domManager.addPlayerBox(computer.name, computer.getId());
       domManager.hideFleet(computer.getId());
       gameController.startBattle();
     }
@@ -56,14 +56,14 @@ function startPlayerVsPlayer(playerOneName, playerTwoName) {
   gameController = new GameController(playerOne, playerTwo);
 
   domManager.clearPlayersSection();
-  domManager.addPlayerBox(playerOne);
+  domManager.addPlayerBox(playerOne.name, playerOne.getId());
   domManager.displayGameplayPage();
 
   // START
   function start() {
     domManager.removePlayerBox(playerTwo.getId());
-    domManager.addPlayerBox(playerOne);
-    domManager.addPlayerBox(playerTwo);
+    domManager.addPlayerBox(playerOne.name, playerOne.getId());
+    domManager.addPlayerBox(playerTwo.name, playerTwo.getId());
     // domManager.removeConfirmFleetButton(playerTwo.getId());
 
     domManager.hideFleet(playerOne.getId());
@@ -85,7 +85,7 @@ function startPlayerVsPlayer(playerOneName, playerTwoName) {
   function next() {
     domManager.removePlayerBox(playerOne.getId());
     // domManager.removeConfirmFleetButton(playerOne.getId());
-    domManager.addPlayerBox(playerTwo);
+    domManager.addPlayerBox(playerTwo.name, playerTwo.getId());
     gameController.beginShipPlacement(playerTwo);
 
     domManager.addConfirmFleetButton(playerTwo.getId(), () => {

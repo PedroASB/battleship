@@ -108,13 +108,13 @@ export function updateBoardPlay(player, { squareClickCallback, squareHoverCallba
   removeShiftKeyDownListener();
 }
 
-export function addPlayerBox(player) {
+export function addPlayerBox(playerName, playerId) {
   const playersSection = document.querySelector('#players-section');
   const playerBoxTemplate = document.querySelector('#player-box-template');
   const playerBox = playerBoxTemplate.content.cloneNode(true).querySelector('.player-box');
 
-  playerBox.id = player.getId();
-  playerBox.querySelector('.name').textContent = player.name;
+  playerBox.id = playerId;
+  playerBox.querySelector('.name').textContent = playerName;
   playersSection.appendChild(playerBox);
 }
 
