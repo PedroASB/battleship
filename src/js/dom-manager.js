@@ -104,6 +104,8 @@ export function updateBoardPlay(player, { squareClickCallback, squareHoverCallba
     });
     x++;
   });
+
+  removeShiftKeyDownListener();
 }
 
 export function addPlayerBox(player) {
