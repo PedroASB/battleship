@@ -139,10 +139,9 @@ export default class GameController {
 
   #isAllowedShipPlacement(player, coordinatesArray) {
     let isAllowed = true;
-    const areValidCoordinates = new Gameboard().areValidCoordinates; // TODO: areValidCoordinates should be a static method of Gameboard
 
     coordinatesArray.forEach((coordinates) => {
-      if (!areValidCoordinates(coordinates.x, coordinates.y) || player.hasShipAt(coordinates))
+      if (!Gameboard.areValidCoordinates(coordinates.x, coordinates.y) || player.hasShipAt(coordinates))
         isAllowed = false;
     });
 

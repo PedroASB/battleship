@@ -26,6 +26,10 @@ export default class Gameboard {
     this.#ships = new Set();
   }
 
+  static areValidCoordinates(x, y) {
+    return x >= 0 && x <= Gameboard.MAX_X && y >= 0 && y <= Gameboard.MAX_Y;
+  }
+
   #initializeBoard() {
     this.#board = Array(Gameboard.MAX_X);
     for (let x = 0; x <= Gameboard.MAX_X; x++) {
@@ -36,10 +40,6 @@ export default class Gameboard {
     }
   }
 
-  areValidCoordinates(x, y) {
-    return x >= 0 && x <= Gameboard.MAX_X && y >= 0 && y <= Gameboard.MAX_Y;
-  }
-
   getBoard() {
     return this.#board;
   }
@@ -47,7 +47,7 @@ export default class Gameboard {
   placeShip(ship, coordinates) {
     const { x, y } = coordinates;
 
-    if (!this.areValidCoordinates(x, y)) {
+    if (!Gameboard.areValidCoordinates(x, y)) {
       throw Error('Attempt to place a ship at an invalid square');
     }
 
@@ -62,7 +62,7 @@ export default class Gameboard {
   receiveAttack(coordinates) {
     const { x, y } = coordinates;
 
-    if (!this.areValidCoordinates(x, y)) {
+    if (!Gameboard.areValidCoordinates(x, y)) {
       throw Error('Attempt to attack an invalid square');
     }
 
@@ -87,7 +87,7 @@ export default class Gameboard {
 
   hasShipAt(coordinates) {
     const { x, y } = coordinates;
-    if (!this.areValidCoordinates(x, y)) {
+    if (!Gameboard.areValidCoordinates(x, y)) {
       throw Error('Attempt to access an invalid square');
     }
     return this.#board[x][y].hasShip();
@@ -95,7 +95,7 @@ export default class Gameboard {
 
   isAttackedAt(coordinates) {
     const { x, y } = coordinates;
-    if (!this.areValidCoordinates(x, y)) {
+    if (!Gameboard.areValidCoordinates(x, y)) {
       throw Error('Attempt to access an invalid square');
     }
     return this.#board[x][y].isAttacked();
