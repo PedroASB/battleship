@@ -36,7 +36,7 @@ export default class Gameboard {
     }
   }
 
-  isValidCoordinate(x, y) {
+  areValidCoordinates(x, y) {
     return x >= 0 && x <= Gameboard.MAX_X && y >= 0 && y <= Gameboard.MAX_Y;
   }
 
@@ -47,12 +47,12 @@ export default class Gameboard {
   placeShip(ship, coordinates) {
     const { x, y } = coordinates;
 
-    if (!this.isValidCoordinate(x, y)) {
-      throw Error('Attempt to place a ship in an invalid coordinate');
+    if (!this.areValidCoordinates(x, y)) {
+      throw Error('Attempt to place a ship at an invalid square');
     }
 
     if (this.#board[x][y].hasShip()) {
-      throw Error('Attempt to place a ship in an already occupied square');
+      throw Error('Attempt to place a ship at an already occupied square');
     }
 
     this.#board[x][y].setShip(ship);
@@ -62,8 +62,8 @@ export default class Gameboard {
   receiveAttack(coordinates) {
     const { x, y } = coordinates;
 
-    if (!this.isValidCoordinate(x, y)) {
-      throw Error('Attempt to attack an invalid coordinate');
+    if (!this.areValidCoordinates(x, y)) {
+      throw Error('Attempt to attack an invalid square');
     }
 
     if (this.#board[x][y].isAttacked()) {
@@ -87,16 +87,16 @@ export default class Gameboard {
 
   hasShipAt(coordinates) {
     const { x, y } = coordinates;
-    if (!this.isValidCoordinate(x, y)) {
-      throw Error('Attempt to access an invalid coordinate');
+    if (!this.areValidCoordinates(x, y)) {
+      throw Error('Attempt to access an invalid square');
     }
     return this.#board[x][y].hasShip();
   }
 
   isAttackedAt(coordinates) {
     const { x, y } = coordinates;
-    if (!this.isValidCoordinate(x, y)) {
-      throw Error('Attempt to access an invalid coordinate');
+    if (!this.areValidCoordinates(x, y)) {
+      throw Error('Attempt to access an invalid square');
     }
     return this.#board[x][y].isAttacked();
   }

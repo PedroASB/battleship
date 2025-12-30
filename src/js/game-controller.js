@@ -139,10 +139,10 @@ export default class GameController {
 
   #isAllowedShipPlacement(player, coordinatesArray) {
     let isAllowed = true;
-    const isValidCoordinate = new Gameboard().isValidCoordinate; // TODO: isValidCoordinate should be a static method of Gameboard
+    const areValidCoordinates = new Gameboard().areValidCoordinates; // TODO: areValidCoordinates should be a static method of Gameboard
 
-    coordinatesArray.forEach((coordinate) => {
-      if (!isValidCoordinate(coordinate.x, coordinate.y) || player.hasShipAt(coordinate))
+    coordinatesArray.forEach((coordinates) => {
+      if (!areValidCoordinates(coordinates.x, coordinates.y) || player.hasShipAt(coordinates))
         isAllowed = false;
     });
 
@@ -166,9 +166,9 @@ export default class GameController {
 
     const ship = this.#shipsQueue.shift();
 
-    coordinatesArray.forEach((coordinate) => {
-      player.placeShip(ship, coordinate);
-      domManager.placeShipAtSquare(player.getId(), coordinate);
+    coordinatesArray.forEach((coordinates) => {
+      player.placeShip(ship, coordinates);
+      domManager.placeShipAtSquare(player.getId(), coordinates);
     });
 
     this.#displayCurrentShipToPlace(player);

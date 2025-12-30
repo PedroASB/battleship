@@ -107,12 +107,12 @@ describe('Gameboard', () => {
 
   describe('areAllShipsSunk()', () => {
     let ship1, ship2, ship3;
-    const coordinatesShip1 = { x: 2, y: 3 };
-    const coordinatesShip2 = [
+    const coordinatesArrayShip1 = { x: 2, y: 3 };
+    const coordinatesArrayShip2 = [
       { x: 3, y: 4 },
       { x: 3, y: 5 },
     ];
-    const coordinatesShip3 = [
+    const coordinatesArrayShip3 = [
       { x: 4, y: 5 },
       { x: 5, y: 5 },
       { x: 6, y: 5 },
@@ -120,43 +120,43 @@ describe('Gameboard', () => {
 
     beforeEach(() => {
       ship1 = new Ship(1);
-      gameboard.placeShip(ship1, coordinatesShip1);
+      gameboard.placeShip(ship1, coordinatesArrayShip1);
 
       ship2 = new Ship(2);
-      coordinatesShip2.forEach((coordinate) => {
-        gameboard.placeShip(ship2, coordinate);
+      coordinatesArrayShip2.forEach((coordinates) => {
+        gameboard.placeShip(ship2, coordinates);
       });
 
       ship3 = new Ship(3);
-      coordinatesShip3.forEach((coordinate) => {
-        gameboard.placeShip(ship3, coordinate);
+      coordinatesArrayShip3.forEach((coordinates) => {
+        gameboard.placeShip(ship3, coordinates);
       });
     });
 
     test('should return false when there is at least one not sunk ship', () => {
       expect(gameboard.areAllShipsSunk()).toBeFalsy();
 
-      gameboard.receiveAttack(coordinatesShip1);
+      gameboard.receiveAttack(coordinatesArrayShip1);
 
-      coordinatesShip2.forEach((coordinate) => {
-        gameboard.receiveAttack(coordinate);
+      coordinatesArrayShip2.forEach((coordinates) => {
+        gameboard.receiveAttack(coordinates);
       });
 
-      gameboard.receiveAttack(coordinatesShip3[0]);
-      gameboard.receiveAttack(coordinatesShip3[1]);
+      gameboard.receiveAttack(coordinatesArrayShip3[0]);
+      gameboard.receiveAttack(coordinatesArrayShip3[1]);
 
       expect(gameboard.areAllShipsSunk()).toBeFalsy();
     });
 
     test('should return true when all ships are sunk', () => {
-      gameboard.receiveAttack(coordinatesShip1);
+      gameboard.receiveAttack(coordinatesArrayShip1);
 
-      coordinatesShip2.forEach((coordinate) => {
-        gameboard.receiveAttack(coordinate);
+      coordinatesArrayShip2.forEach((coordinates) => {
+        gameboard.receiveAttack(coordinates);
       });
 
-      coordinatesShip3.forEach((coordinate) => {
-        gameboard.receiveAttack(coordinate);
+      coordinatesArrayShip3.forEach((coordinates) => {
+        gameboard.receiveAttack(coordinates);
       });
 
       expect(gameboard.areAllShipsSunk()).toBeTruthy();
