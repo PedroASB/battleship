@@ -17,25 +17,27 @@ let playerTwo = null;
 domManager.displayInitialPage();
 
 function startPlayerVsComputer() {
-  playerOne = new Player('Player', 'real');
-  playerTwo = new Player('Computer', 'computer');
+  const player = new Player('Player', 'real');
+  playerOne = player;
+  const computer = new Player('Computer', 'computer');
+  playerTwo = computer;
 
-  placeSampleShips1(playerTwo);
+  placeSampleShips1(computer);
 
-  gameController = new GameController(playerOne, playerTwo);
+  gameController = new GameController(player, computer);
 
   domManager.clearPlayersSection();
-  domManager.addPlayerBox(playerOne);
+  domManager.addPlayerBox(player);
   domManager.displayGameplayPage();
 
-  gameController.beginShipPlacement(playerOne);
+  gameController.beginShipPlacement(player);
 
-  domManager.addConfirmFleetButton(playerOne.getId(), () => {
+  domManager.addConfirmFleetButton(player.getId(), () => {
     const readyFleet = gameController.confirmFleet();
     if (readyFleet) {
-      domManager.removeConfirmFleetButton(playerOne.getId());
-      domManager.addPlayerBox(playerTwo);
-      domManager.hideFleet(playerTwo.getId());
+      domManager.removeConfirmFleetButton(player.getId());
+      domManager.addPlayerBox(computer);
+      domManager.hideFleet(computer.getId());
       gameController.startBattle();
     }
   });
