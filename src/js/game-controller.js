@@ -64,7 +64,8 @@ export default class GameController {
     domManager.unsetTarget(this.#receiver.getId());
     domManager.showFleet(this.#attacker.getId());
     domManager.showFleet(this.#receiver.getId());
-    domManager.showWinningMessage(this.#attacker.name); // temporary functionality
+    domManager.clearCurrentTurnMessage();
+    domManager.displayFeedbackMessage(`${this.#attacker.name} has won the battleship!`);
   }
 
   #handleComputerAttack() {
@@ -250,8 +251,6 @@ export default class GameController {
     domManager.setTarget(this.#receiver.getId());
     domManager.displayFeedbackMessage(`The battleship has started!`);
     domManager.displayCurrentTurnMessage(this.#attacker.name);
-
-    console.log(this.playerOne);
-    console.log(this.playerTwo);
+    domManager.showNewGameSection();
   }
 }

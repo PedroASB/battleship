@@ -53,12 +53,22 @@ export function getTwoPlayersNames() {
 /**
  * Gameplay page
  */
+export function getRematchButton() {
+  return document.getElementById('rematch-btn');
+}
+
+export function getNewGameButton() {
+  return document.getElementById('new-game-btn');
+}
+
 export function displayGameplayPage() {
   displayPage('gameplay-page');
 }
 
 export function updateBoardPlay(player, { squareClickCallback, squareHoverCallback }) {
   const boardDiv = document.getElementById(player.getId()).querySelector('.board');
+  boardDiv.classList.remove('on-ship-placement');
+  boardDiv.classList.add('on-play');
   boardDiv.innerHTML = '';
 
   let x, y;
@@ -116,11 +126,23 @@ export function clearPlayersSection() {
   playersSection.innerHTML = '';
 }
 
+export function showNewGameSection() {
+  const newGameSection = document.getElementById('new-game-section');
+  newGameSection.setAttribute('hidden', 'false');
+}
+
+export function hideNewGameSection() {
+  const newGameSection = document.getElementById('new-game-section');
+  newGameSection.setAttribute('hidden', 'true');
+}
+
 export function updateBoardPlaceShips(
   player,
   { squareClickCallback, squareHoverCallback, shiftKeyDownCallback },
 ) {
   const boardDiv = document.getElementById(player.getId()).querySelector('.board');
+  boardDiv.classList.remove('on-play');
+  boardDiv.classList.add('on-ship-placement');
   boardDiv.innerHTML = '';
 
   let x, y;
@@ -273,9 +295,4 @@ export function displayCoordinatesFeedback(coordinates) {
 export function clearCoordinatesFeedback() {
   const coordinatesFeedback = document.querySelector('#feedback-section .coordinates');
   coordinatesFeedback.textContent = '';
-}
-
-// Note: this is a temporary behavior for handle winning
-export function showWinningMessage(playerName) {
-  alert(`${playerName} has won the battleship!\nRefresh the page to start a new game.`);
 }

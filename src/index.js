@@ -111,41 +111,51 @@ function placeSampleShips2(player) {
 
 // Program begin
 const playVsComputerButton = domManager.getPlayVsComputerButton();
-const getPlayVsFriendButton = domManager.getPlayVsFriendButton();
+const playVsFriendButton = domManager.getPlayVsFriendButton();
+const rematchButton = domManager.getRematchButton();
+const newGameButton = domManager.getNewGameButton();
+let gameController = null;
+let playerOne = null;
+let playerTwo = null;
+
 domManager.displayInitialPage();
 
-playVsComputerButton.addEventListener('click', () => {
-  const player = new Player('Player', 'real');
-  const computer = new Player('Computer', 'computer');
+function startPlayerVsComputer() {
+  playerOne = new Player('Player', 'real');
+  playerTwo = new Player('Computer', 'computer');
 
-  placeSampleShips2(computer);
+  placeSampleShips2(playerTwo);
 
-  const gameController = new GameController(player, computer);
+  gameController = new GameController(playerOne, playerTwo);
 
   domManager.clearPlayersSection();
-  domManager.addPlayerBox(player);
+  domManager.addPlayerBox(playerOne);
   domManager.displayGameplayPage();
 
-  gameController.beginShipPlacement(player);
+  gameController.beginShipPlacement(playerOne);
 
-  domManager.addConfirmFleetButton(player.getId(), () => {
+  domManager.addConfirmFleetButton(playerOne.getId(), () => {
     const readyFleet = gameController.confirmFleet();
     if (readyFleet) {
-      domManager.removeConfirmFleetButton(player.getId());
-      domManager.addPlayerBox(computer);
-      domManager.hideFleet(computer.getId());
+      domManager.removeConfirmFleetButton(playerOne.getId());
+      domManager.addPlayerBox(playerTwo);
+      domManager.hideFleet(playerTwo.getId());
       gameController.startBattle();
     }
   });
-});
+}
 
-getPlayVsFriendButton.addEventListener('click', () => {
-  const { playerOneName, playerTwoName } = domManager.getTwoPlayersNames();
+function startPlayerVsPlayer(playerOneName, playerTwoName) {
+  if (!playerOneName || !playerTwoName) {
+    const { playerOneName, playerTwoName } = domManager.getTwoPlayersNames();
+    playerOne = new Player(playerOneName, 'real');
+    playerTwo = new Player(playerTwoName, 'real');
+  } else {
+    playerOne = new Player(playerOneName, 'real');
+    playerTwo = new Player(playerTwoName, 'real');
+  }
 
-  const playerOne = new Player(playerOneName, 'real');
-  const playerTwo = new Player(playerTwoName, 'real');
-
-  const gameController = new GameController(playerOne, playerTwo);
+  gameController = new GameController(playerOne, playerTwo);
 
   domManager.clearPlayersSection();
   domManager.addPlayerBox(playerOne);
@@ -186,5 +196,30 @@ getPlayVsFriendButton.addEventListener('click', () => {
         start();
       }
     });
+  }
+}
+
+playVsComputerButton.addEventListener('click', () => {
+  startPlayerVsComputer();
+});
+
+playVsFriendButton.addEventListener('click', () => {
+  startPlayerVsPlayer();
+});
+
+rematchButton.addEventListener('click', () => {
+  if (confirm('Do you want to do a rematch?')) {
+    domManager.hideNewGameSection();
+    domManager.clearCurrentTurnMessage();
+    if (playerOne.isComputer() || playerTwo.isComputer()) startPlayerVsComputer();
+    else startPlayerVsPlayer(playerOne.name, playerTwo.name);
+  }
+});
+
+newGameButton.addEventListener('click', () => {
+  if (confirm('Do you want to start a new game?')) {
+    domManager.displayInitialPage();
+    domManager.hideNewGameSection();
+    domManager.clearCurrentTurnMessage();
   }
 });

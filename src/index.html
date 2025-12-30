@@ -78,13 +78,13 @@
       </div>
 
       <div id="gameplay-page" class="page" hidden="true">
-        <div id="feedback-section">
+        <div id="feedback-section" class="section">
           <p class="message"></p>
           <p class="turn"></p>
           <p class="coordinates"></p>
         </div>
 
-        <div id="players-section"></div>
+        <div id="players-section" class="section"></div>
 
         <template id="player-box-template">
           <div class="player-box">
@@ -118,6 +118,11 @@
             </div>
           </div>
         </template>
+
+        <div id="new-game-section" class="section" hidden="true">
+          <button id="rematch-btn" type="button">Rematch</button>
+          <button id="new-game-btn" type="button">New Game</button>
+        </div>
       </div>
     </main>
 

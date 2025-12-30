@@ -43,6 +43,10 @@ main {
   .page[hidden='true'] {
     display: none;
   }
+
+  .section[hidden='true'] {
+    display: none;
+  }
 }
 
 #initial-page[hidden='false'] {
@@ -168,6 +172,29 @@ main {
     flex-direction: row;
     justify-content: space-evenly;
     gap: 32px;
+  }
+
+  #new-game-section[hidden='false'] {
+    margin: 40px 0;
+    display: flex;
+    gap: 48px;
+
+    [type='button'] {
+      text-transform: uppercase;
+      width: 16ch;
+      padding: 4px 0;
+      border: none;
+      border-radius: 8px;
+      border-bottom: 4px solid #c4c4c4;
+      background-color: #ebebeb;
+      font-weight: 500;
+
+      &:hover {
+        background-color: #dde6f1;
+        border-bottom-color: #b0b6c2;
+        cursor: pointer;
+      }
+    }
   }
 }
 
