@@ -1,18 +1,7 @@
 import * as domManager from './dom-manager.js';
 import Ship from './ship.js';
 import Gameboard from './gameboard.js';
-
-function delay(seconds) {
-  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-}
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
+import { delay, shuffleArray } from './utils.js';
 
 export default class GameController {
   #attacker;
