@@ -65,8 +65,8 @@ export function displayGameplayPage() {
   displayPage('gameplay-page');
 }
 
-export function updateBoardPlay(player, { squareClickCallback, squareHoverCallback }) {
-  const boardDiv = document.getElementById(player.getId()).querySelector('.board');
+export function updateBoardPlay(playerId, board, { squareClickCallback, squareHoverCallback }) {
+  const boardDiv = document.getElementById(playerId).querySelector('.board');
   boardDiv.classList.remove('on-ship-placement');
   boardDiv.classList.add('on-play');
   boardDiv.innerHTML = '';
@@ -74,14 +74,14 @@ export function updateBoardPlay(player, { squareClickCallback, squareHoverCallba
   let x, y;
 
   x = 0;
-  player.getBoard().forEach((row) => {
+  board.forEach((row) => {
     y = 0;
     row.forEach((square) => {
       const squareDiv = document.createElement('div');
 
       squareDiv.classList.add('square');
-      squareDiv.setAttribute('attacked', square.isAttacked());
-      squareDiv.setAttribute('ship', square.hasShip());
+      squareDiv.setAttribute('attacked', square.isAttacked);
+      squareDiv.setAttribute('ship', square.hasShip);
       squareDiv.dataset.position = `${x},${y}`;
       squareDiv.innerHTML = `<div class="attack-mark"></div>`;
 
@@ -138,11 +138,20 @@ export function hideNewGameSection() {
   newGameSection.setAttribute('hidden', 'true');
 }
 
+/**
+ * @NOTE
+ * This function lives in the DOM manager because it depends on UI events and DOM elements.
+ * It still needs to work with a Player instance, but the DOM manager does not control game logic.
+ * To keep coupling low, the DOM layer only forwards the Player instance to callbacks without
+ * calling its methods directly or depending on its internal structure.
+ */
 export function updateBoardPlaceShips(
-  player,
+  playerId,
+  board,
+  playerInstance,
   { squareClickCallback, squareHoverCallback, shiftKeyDownCallback },
 ) {
-  const boardDiv = document.getElementById(player.getId()).querySelector('.board');
+  const boardDiv = document.getElementById(playerId).querySelector('.board');
   boardDiv.classList.remove('on-play');
   boardDiv.classList.add('on-ship-placement');
   boardDiv.innerHTML = '';
@@ -150,27 +159,27 @@ export function updateBoardPlaceShips(
   let x, y;
 
   x = 0;
-  player.getBoard().forEach((row) => {
+  board.forEach((row) => {
     y = 0;
     row.forEach((square) => {
       const squareDiv = document.createElement('div');
 
       squareDiv.classList.add('square');
-      squareDiv.setAttribute('attacked', square.isAttacked());
-      squareDiv.setAttribute('ship', square.hasShip());
+      squareDiv.setAttribute('attacked', square.isAttacked);
+      squareDiv.setAttribute('ship', square.hasShip);
       squareDiv.dataset.position = `${x},${y}`;
       squareDiv.innerHTML = `<div class="attack-mark"></div>`;
 
       const coordinates = { x, y };
 
       squareDiv.addEventListener('click', () => {
-        if (squareClickCallback) squareClickCallback(player, coordinates);
+        if (squareClickCallback) squareClickCallback(playerInstance, coordinates);
       });
 
       squareDiv.addEventListener('mouseenter', () => {
         const friendlyCoordinates = getFriendlyCoordinates(coordinates);
         squareDiv.title = `${friendlyCoordinates.x} ${friendlyCoordinates.y}`;
-        if (squareHoverCallback) squareHoverCallback(player, coordinates);
+        if (squareHoverCallback) squareHoverCallback(playerInstance, coordinates);
       });
 
       squareDiv.addEventListener('mouseleave', clearCoordinatesFeedback);

@@ -141,7 +141,10 @@ export default class GameController {
     let isAllowed = true;
 
     coordinatesArray.forEach((coordinates) => {
-      if (!Gameboard.areValidCoordinates(coordinates.x, coordinates.y) || player.hasShipAt(coordinates))
+      if (
+        !Gameboard.areValidCoordinates(coordinates.x, coordinates.y) ||
+        player.hasShipAt(coordinates)
+      )
         isAllowed = false;
     });
 
@@ -191,7 +194,7 @@ export default class GameController {
    */
 
   #setBoardToPlaceShips(player) {
-    domManager.updateBoardPlaceShips(player, {
+    domManager.updateBoardPlaceShips(player.getId(), player.getBoardDto(), player, {
       squareHoverCallback: this.#shipPlacementHover.bind(this),
       squareClickCallback: this.#shipPlacementConfirm.bind(this),
       shiftKeyDownCallback: () => {
@@ -202,7 +205,7 @@ export default class GameController {
   }
 
   #setBoardToPlay(player) {
-    domManager.updateBoardPlay(player, {
+    domManager.updateBoardPlay(player.getId(), player.getBoardDto(), {
       squareHoverCallback: this.#displayCoordinates.bind(this, player),
       squareClickCallback: this.#handleAttack.bind(this, player),
     });
