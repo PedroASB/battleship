@@ -44,6 +44,21 @@ export default class Gameboard {
     return this.#board;
   }
 
+  // returns a data transfer object for a board
+  getBoardDto() {
+    const boardDto = Array(Gameboard.MAX_X);
+    for (let x = 0; x <= Gameboard.MAX_X; x++) {
+      boardDto[x] = Array(Gameboard.MAX_Y);
+      for (let y = 0; y <= Gameboard.MAX_Y; y++) {
+        boardDto[x][y] = {
+          isAttacked: this.#board[x][y].isAttacked(),
+          hasShip: this.#board[x][y].hasShip(),
+        };
+      }
+    }
+    return boardDto;
+  }
+
   placeShip(ship, coordinates) {
     const { x, y } = coordinates;
 
