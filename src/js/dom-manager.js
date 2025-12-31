@@ -1,3 +1,6 @@
+/**
+ * General functions
+ */
 function displayPage(id) {
   const pages = Array.from(document.querySelectorAll('.page'));
   pages.forEach((page) => {
@@ -65,7 +68,7 @@ export function displayGameplayPage() {
   displayPage('gameplay-page');
 }
 
-export function updateBoardPlay(playerId, board, { squareClickCallback, squareHoverCallback }) {
+export function addGameplayBoard(playerId, board, { squareClickCallback, squareHoverCallback }) {
   const boardDiv = document.getElementById(playerId).querySelector('.board');
   boardDiv.classList.remove('on-ship-placement');
   boardDiv.classList.add('on-play');
@@ -145,7 +148,7 @@ export function hideNewGameSection() {
  * To keep coupling low, the DOM layer only forwards the Player instance to callbacks without
  * calling its methods directly or depending on its internal structure.
  */
-export function updateBoardPlaceShips(
+export function addSetupBoard(
   playerId,
   board,
   playerInstance,

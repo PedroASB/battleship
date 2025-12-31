@@ -194,7 +194,7 @@ export default class GameController {
    */
 
   #setBoardToPlaceShips(player) {
-    domManager.updateBoardPlaceShips(player.getId(), player.getBoardDto(), player, {
+    domManager.addSetupBoard(player.getId(), player.getBoardDto(), player, {
       squareHoverCallback: this.#shipPlacementHover.bind(this),
       squareClickCallback: this.#shipPlacementConfirm.bind(this),
       shiftKeyDownCallback: () => {
@@ -205,7 +205,7 @@ export default class GameController {
   }
 
   #setBoardToPlay(player) {
-    domManager.updateBoardPlay(player.getId(), player.getBoardDto(), {
+    domManager.addGameplayBoard(player.getId(), player.getBoardDto(), {
       squareHoverCallback: this.#displayCoordinates.bind(this, player),
       squareClickCallback: this.#handleAttack.bind(this, player),
     });
