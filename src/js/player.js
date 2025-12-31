@@ -38,6 +38,10 @@ export default class Player {
     return this.#gameboard.getBoard();
   }
 
+  getBoardDto() {
+    return this.#gameboard.getBoardDto();
+  }
+
   placeShip(ship, coordinates) {
     this.#gameboard.placeShip(ship, coordinates);
   }
