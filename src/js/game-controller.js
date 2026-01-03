@@ -38,6 +38,75 @@ export default class GameController {
     shuffleArray(this.#randomAttacks);
   }
 
+  generateRandomFleet(player) {
+    this.#shipsQueue = [];
+
+    this.#fleetTemplate.forEach((shipTemplate) => {
+      const ship = new Ship(shipTemplate.length, shipTemplate.class);
+      this.#shipsQueue.push(ship);
+    });
+
+    function placeHorizontalShip(ship) {
+      const validInitialCoordinates = [];
+
+      for (let x = 0; x <= Gameboard.MAX_X; x++) {
+        for (let y = 0; y <= Gameboard.MAX_Y; y++) {
+          let flag = true;
+          for (let i = x; i < x + ship.getLength(); i++) {
+            if (!Gameboard.areValidCoordinates(i, y) || player.hasShipAt({ x: i, y: y })) {
+              flag = false;
+              break;
+            }
+          }
+          if (flag === true) validInitialCoordinates.push({ x, y });
+        }
+      }
+
+      // select random initial coordinates
+      let { x, y } =
+        validInitialCoordinates[Math.floor(Math.random() * validInitialCoordinates.length)];
+
+      for (let i = 0; i < ship.getLength(); i++) {
+        player.placeShip(ship, { x: x + i, y: y });
+      }
+    }
+
+    function placeVerticalShip(ship) {
+      const validInitialCoordinates = [];
+
+      for (let x = 0; x <= Gameboard.MAX_X; x++) {
+        for (let y = 0; y <= Gameboard.MAX_Y; y++) {
+          let flag = true;
+          for (let i = y; i < y + ship.getLength(); i++) {
+            if (!Gameboard.areValidCoordinates(x, i) || player.hasShipAt({ x: x, y: i })) {
+              flag = false;
+              break;
+            }
+          }
+          if (flag === true) validInitialCoordinates.push({ x, y });
+        }
+      }
+
+      // select random initial coordinates
+      let { x, y } =
+        validInitialCoordinates[Math.floor(Math.random() * validInitialCoordinates.length)];
+
+      for (let i = 0; i < ship.getLength(); i++) {
+        player.placeShip(ship, { x: x, y: y + i });
+      }
+    }
+
+    while (this.#shipsQueue.length) {
+      const ship = this.#shipsQueue.shift();
+
+      if (Math.floor(Math.random() * 2)) {
+        placeHorizontalShip(ship);
+      } else {
+        placeVerticalShip(ship);
+      }
+    }
+  }
+
   #swapAttacker() {
     [this.#attacker, this.#receiver] = [this.#receiver, this.#attacker];
     domManager.unsetTarget(this.#attacker.getId());
