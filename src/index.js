@@ -3,7 +3,6 @@ import './css/style.css';
 import * as domManager from './js/dom-manager.js';
 import GameController from './js/game-controller.js';
 import Player from './js/player.js';
-import { placeSampleShips1, placeSampleShips2 } from './js/sample-ships.js';
 
 // Program begin
 const playVsComputerButton = domManager.getPlayVsComputerButton();
@@ -22,14 +21,13 @@ function startPlayerVsComputer() {
   const computer = new Player('Computer', 'computer');
   playerTwo = computer;
 
-  placeSampleShips1(computer);
-
   gameController = new GameController(player, computer);
 
   domManager.clearPlayersSection();
   domManager.addPlayerBox(player.name, player.getId());
   domManager.displayGameplayPage();
 
+  gameController.generateRandomFleet(computer);
   gameController.beginShipPlacement(player);
 
   domManager.addConfirmFleetButton(player.getId(), () => {
