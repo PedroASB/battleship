@@ -207,6 +207,9 @@ main {
 
 .player-box {
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   .title {
     text-align: center;
@@ -334,7 +337,21 @@ main {
 }
 
 button.confirm-fleet {
-  margin: 20px 40px;
+  margin: 30px 0px 20px 40px;
+  text-transform: uppercase;
+  padding: 8px 32px;
+  border: none;
+  border-radius: 8px;
+  border-bottom: 4px solid var(--button-border-color);
+  background-color: var(--button-background-color);
+  font-weight: 500;
+  font-size: 1rem;
+
+  &:hover {
+    background-color: var(--button-hover-background-color);
+    border-bottom-color: var(--button-hover-border-color);
+    cursor: pointer;
+  }
 }
 
 footer {
