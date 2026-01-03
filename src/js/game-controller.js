@@ -199,7 +199,7 @@ export default class GameController {
       squareClickCallback: this.#shipPlacementConfirm.bind(this),
       shiftKeyDownCallback: () => {
         this.#switchCurrentPlacementAxis();
-        this.#shipPlacementHover(player, { x: 0, y: 0 }); // TODO: keep at the same position after switching axis
+        this.#shipPlacementHover(player, domManager.getHoveredCoordinates());
       },
     });
   }

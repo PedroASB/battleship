@@ -27,6 +27,13 @@ function setShiftKeyDownListener(shiftKeyDownCallback) {
   document.addEventListener('keydown', shiftKeyDownHandler);
 }
 
+// current coordinates being hovered
+let hoveredCoordinates = { x: null, y: null };
+
+export function getHoveredCoordinates() {
+  return hoveredCoordinates;
+}
+
 /**
  * Initial page
  */
@@ -95,6 +102,7 @@ export function addGameplayBoard(playerId, board, { squareClickCallback, squareH
       });
 
       squareDiv.addEventListener('mouseenter', () => {
+        hoveredCoordinates = coordinates;
         const friendlyCoordinates = getFriendlyCoordinates(coordinates);
         squareDiv.title = `${friendlyCoordinates.x} ${friendlyCoordinates.y}`;
         if (squareHoverCallback) squareHoverCallback(coordinates);
@@ -180,6 +188,7 @@ export function addSetupBoard(
       });
 
       squareDiv.addEventListener('mouseenter', () => {
+        hoveredCoordinates = coordinates;
         const friendlyCoordinates = getFriendlyCoordinates(coordinates);
         squareDiv.title = `${friendlyCoordinates.x} ${friendlyCoordinates.y}`;
         if (squareHoverCallback) squareHoverCallback(playerInstance, coordinates);
