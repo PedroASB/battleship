@@ -1,8 +1,23 @@
+@font-face {
+  font-family: 'Black Ops One';
+  src:
+    url('../assets/fonts/BlackOpsOne-Regular.woff2') format('woff2'),
+    url('../assets/fonts/BlackOpsOne-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --system-ui:
     system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --main-background-color: #484b5e;
+  /* --main-background-color: #222222; */
+  --header-background-color-1: #142864;
+  --header-background-color-2: #4664a0;
+  --logo-font-color: #e5e8eb;
+  --logo-text-strike-color: #c7ccce;
   --main-font-color: #fff;
   --board-border-color: #fff;
   --square-background-color: #588897;
@@ -16,6 +31,7 @@
   --button-background-color: #ebebeb;
   --button-hover-border-color: #b0b6c2;
   --button-hover-background-color: #dde6f1;
+  --square-size: 40px;
 }
 
 body {
@@ -32,14 +48,44 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 32px 0px;
   width: 100%;
+  margin-bottom: 32px;
+  padding: 16px 0px 24px 0px;
+  filter: drop-shadow(0 10px 0.75rem rgba(0, 0, 0, 0.25));
+  background-color: var(--header-background-color-1);
+  background: linear-gradient(
+    180deg,
+    var(--header-background-color-1) 10%,
+    var(--header-background-color-2) 100%
+  );
 
-  #main-title {
-    font-weight: 900;
-    font-size: 3rem;
+  #logo {
     width: fit-content;
-    text-decoration: underline;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+    filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.25));
+    user-select: none;
+
+    img {
+      width: 280px;
+      position: relative;
+      top: 4px;
+      -webkit-user-drag: none;
+    }
+
+    #main-title {
+      width: fit-content;
+      font-family: 'Black Ops One', var(--system-ui);
+      font-size: 4.5rem;
+      background-color: black;
+      border-radius: 16px;
+      padding: 4px 16px;
+      color: var(--logo-font-color);
+      -webkit-text-stroke: 2px var(--logo-text-strike-color);
+    }
   }
 }
 
@@ -62,8 +108,8 @@ main {
   align-items: center;
 
   #subtitle {
-    font-size: 1.1rem;
-    font-weight: 500;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
 
   #description {
@@ -215,12 +261,13 @@ main {
     text-align: center;
     margin: 16px 0;
     font-size: 1.2rem;
+    font-weight: 600;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(11, 40px);
-    grid-template-rows: repeat(11, 40px);
+    grid-template-columns: repeat(11, var(--square-size));
+    grid-template-rows: repeat(11, var(--square-size));
 
     & > * {
       align-items: center;
