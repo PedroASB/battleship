@@ -12,26 +12,29 @@
   --system-ui:
     system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --main-background-color: #484b5e;
-  /* --main-background-color: #222222; */
+
+  --main-background-color: #222222;
+  --main-font-color: #fff;
+
   --header-background-color-1: #142864;
   --header-background-color-2: #4664a0;
   --logo-font-color: #e5e8eb;
   --logo-text-strike-color: #c7ccce;
-  --main-font-color: #fff;
+
   --board-border-color: #fff;
-  --square-background-color: #588897;
-  --square-ship-background-color: #41646e;
-  --attack-mark-hit-color: #e97272;
-  --attack-mark-miss-color: #36494e;
-  --square-hover-border-color: #ebab62;
+  --square-size: 40px;
+  --square-background-color: rgba(90, 115, 140, 0.65);
+  --square-ship-background-color: #1f2741;
+  --attack-mark-hit-color: #ff5353;
+  --attack-mark-miss-color: #ffffff;
+  --square-hover-border-color: #f3853c;
   --square-allowed-border-color: #a8e496;
   --square-not-allowed-border-color: #f59191;
+
   --button-border-color: #c4c4c4;
   --button-background-color: #ebebeb;
   --button-hover-border-color: #b0b6c2;
   --button-hover-background-color: #dde6f1;
-  --square-size: 40px;
 }
 
 body {
@@ -67,13 +70,13 @@ header {
     justify-content: center;
     gap: 0px;
     filter: drop-shadow(0 0 0.75rem rgba(0, 0, 0, 0.25));
-    user-select: none;
 
     img {
       width: 280px;
       position: relative;
       top: 4px;
       -webkit-user-drag: none;
+      user-select: none;
     }
 
     #main-title {
@@ -212,10 +215,20 @@ main {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
     gap: 8px;
     width: 600px;
-    height: 80px;
-    text-align: center;
+    min-height: 80px;
+    padding: 8px 16px;
+    color: #7fff90;
+    background-color: #242b25;
+    border: 6px solid #424242;
+    border-radius: 32px;
+    font-family: 'Black Ops One', monospace, var(--system-ui);
+    font-size: 1.2rem;
+    font-family: 'Courier New', Courier, monospace;
+    /* text-transform: uppercase; */
+    font-weight: 600;
   }
 
   #players-section {
@@ -299,7 +312,8 @@ main {
     grid-template-columns: subgrid;
     grid-template-rows: subgrid;
     outline: 6px solid var(--board-border-color);
-    background-color: var(--square-background-color);
+    background-image: url('../assets/imgs/dark-ocean-background.png');
+    background-size: cover;
 
     .square {
       border: 1px solid var(--board-border-color);
