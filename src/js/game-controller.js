@@ -63,7 +63,7 @@ export default class GameController {
       }
 
       // select random initial coordinates
-      let { x, y } =
+      const { x, y } =
         validInitialCoordinates[Math.floor(Math.random() * validInitialCoordinates.length)];
 
       for (let i = 0; i < ship.getLength(); i++) {
@@ -88,7 +88,7 @@ export default class GameController {
       }
 
       // select random initial coordinates
-      let { x, y } =
+      const { x, y } =
         validInitialCoordinates[Math.floor(Math.random() * validInitialCoordinates.length)];
 
       for (let i = 0; i < ship.getLength(); i++) {
