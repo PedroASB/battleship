@@ -8,7 +8,7 @@
   <body>
     <header>
       <div id="logo">
-        <img src="./assets/imgs/battleship-silhouette.png" alt="Battleship Silhouette">
+        <img src="./assets/imgs/battleship-silhouette.png" alt="Battleship Silhouette" />
         <h1 id="main-title">Battleship</h1>
       </div>
     </header>
@@ -96,7 +96,14 @@
 
         <template id="player-box-template">
           <div class="player-box">
-            <h2 class="title"><span class="name"></span>'s board</h2>
+            <h2 class="title">
+              <img
+                src="./assets/icons/target-icon.png"
+                alt="Current Target"
+                class="icon target hidden"
+              />
+              <div><span class="name"></span>'s board</div>
+            </h2>
             <div class="grid">
               <div class="y-indexes indexes">
                 <div>A</div>
@@ -126,6 +133,9 @@
             </div>
           </div>
         </template>
+
+        <!-- <template id="ship-to-place-template"></template> -->
+        <!-- <div id="ship-to-place"></div> -->
 
         <div id="new-game-section" class="section" hidden="true">
           <button id="rematch-btn" type="button">Rematch</button>

@@ -266,13 +266,21 @@ export function receiveAttack(playerId, coordinates) {
 }
 
 export function setTarget(playerId) {
-  const boardDiv = document.getElementById(playerId).querySelector('.board');
+  const playerBox = document.getElementById(playerId);
+  const boardDiv = playerBox.querySelector('.board');
+  const boardTitleTarget = playerBox.querySelector('.target');
+
   boardDiv.classList.add('targetable');
+  boardTitleTarget.classList.remove('hidden');
 }
 
 export function unsetTarget(playerId) {
-  const boardDiv = document.getElementById(playerId).querySelector('.board');
+  const playerBox = document.getElementById(playerId);
+  const boardDiv = playerBox.querySelector('.board');
+  const boardTitleTarget = playerBox.querySelector('.target');
+
   boardDiv.classList.remove('targetable');
+  boardTitleTarget.classList.add('hidden');
 }
 
 export function hideFleet(playerId) {
