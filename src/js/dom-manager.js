@@ -137,7 +137,9 @@ export function removePlayerBox(playerId) {
 export function addCoordinatesInfoBox() {
   const playersSection = document.querySelector('#players-section');
   const turnInfoBoxTemplate = document.querySelector('#coordinates-info-box-template');
-  const turnInfoBox = turnInfoBoxTemplate.content.cloneNode(true).getElementById('coordinates-info-box');
+  const turnInfoBox = turnInfoBoxTemplate.content
+    .cloneNode(true)
+    .getElementById('coordinates-info-box');
 
   playersSection.appendChild(turnInfoBox);
 }
@@ -306,7 +308,7 @@ export function showFleet(playerId) {
 
 export function displayFeedbackMessage(message) {
   const feedbackMessage = document.querySelector('#feedback-section .message');
-  feedbackMessage.textContent = message;
+  feedbackMessage.innerHTML = message;
 }
 
 export function displayCurrentTurnMessage(playerName) {
@@ -353,4 +355,18 @@ export function faceMissileIconToOpposite() {
   const missileIcon = document.querySelector('#coordinates-info-box .missile-icon');
   const newDirection = missileIcon.getAttribute('face-to') === 'left' ? 'right' : 'left';
   missileIcon.setAttribute('face-to', newDirection);
+}
+
+export function displayCurrentShipToPlace(playerName, shipClass, shipLength, vsPlayer = false) {
+  const vsPlayerSentence = vsPlayer
+    ? `<div>Remember to hide the screen from your opponent.</div>`
+    : ``;
+
+  const feedbackMessage =
+    `<div>${playerName}, prepare your fleet!</div>` +
+    vsPlayerSentence +
+    `<div>Use <span class="shift-key">Shift</span> to switch between X and Y axises.</div>` +
+    `<div>Current ship to place: ${shipClass} (${shipLength})</div>`;
+
+  displayFeedbackMessage(feedbackMessage);
 }

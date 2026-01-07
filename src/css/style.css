@@ -230,9 +230,15 @@ main {
     border: 6px solid var(--radar-border-color);
     border-radius: 32px;
     font-family: 'Black Ops One', monospace, var(--system-ui);
-    font-size: 1.2rem;
     font-family: 'Courier New', Courier, monospace;
     font-weight: 600;
+    font-size: 1.1rem;
+
+    .message {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
   }
 
   #players-section {
@@ -508,6 +514,13 @@ button.confirm-fleet {
     border-bottom-color: var(--button-hover-border-color);
     cursor: pointer;
   }
+}
+
+span.shift-key {
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  padding: 2px 4px;
+  font-size: 0.9em;
 }
 
 footer {

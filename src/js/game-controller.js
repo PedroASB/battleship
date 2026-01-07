@@ -186,11 +186,17 @@ export default class GameController {
   }
 
   #displayCurrentShipToPlace(player) {
-    if (this.#shipsQueue.length > 0) {
-      domManager.displayFeedbackMessage(
-        `${player.name}, prepare your fleet! Current ship to place: ${this.#getShipToBePlacedClass()}. Use Shift to switch between X and Y axises.`,
-      );
+    if (this.#shipsQueue.length <= 0) {
+      domManager.displayFeedbackMessage(`All done! Click on CONFIRM FLEET button to proceed!`);
+      return;
     }
+    const vsPlayer = this.playerOne.isReal() && this.playerTwo.isReal();
+    domManager.displayCurrentShipToPlace(
+      player.name,
+      this.#getShipToBePlacedClass(),
+      this.#getShipToBePlacedLength(),
+      vsPlayer,
+    );
   }
 
   #generateCoordinatesArray(coordinates) {
