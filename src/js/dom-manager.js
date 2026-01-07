@@ -136,17 +136,17 @@ export function removePlayerBox(playerId) {
 
 export function addCoordinatesInfoBox() {
   const playersSection = document.querySelector('#players-section');
-  const turnInfoBoxTemplate = document.querySelector('#coordinates-info-box-template');
-  const turnInfoBox = turnInfoBoxTemplate.content
+  const coordinatesInfoBoxTemplate = document.querySelector('#coordinates-info-box-template');
+  const coordinatesInfoBox = coordinatesInfoBoxTemplate.content
     .cloneNode(true)
     .getElementById('coordinates-info-box');
 
-  playersSection.appendChild(turnInfoBox);
+  playersSection.appendChild(coordinatesInfoBox);
 }
 
-export function removeTurnInfoBox() {
-  const turnInfoBox = document.getElementById('coordinates-info-box');
-  turnInfoBox.remove();
+export function removeCoordinatesInfoBox() {
+  const coordinatesInfoBox = document.getElementById('coordinates-info-box');
+  coordinatesInfoBox.remove();
 }
 
 export function clearPlayersSection() {
