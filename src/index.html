@@ -89,7 +89,6 @@
         <div id="feedback-section" class="section">
           <p class="message"></p>
           <p class="turn"></p>
-          <p class="coordinates"></p>
         </div>
 
         <div id="players-section" class="section"></div>
@@ -97,11 +96,13 @@
         <template id="player-box-template">
           <div class="player-box">
             <h2 class="title">
-              <img
-                src="./assets/icons/target-icon.png"
-                alt="Current Target"
-                class="icon target hidden"
-              />
+              <div class="target">
+                <img
+                  src="./assets/icons/target-icon.png"
+                  alt="Current Target"
+                  class="icon hidden"
+                />
+              </div>
               <div><span class="name"></span>'s board</div>
             </h2>
             <div class="grid">
@@ -134,8 +135,27 @@
           </div>
         </template>
 
-        <!-- <template id="ship-to-place-template"></template> -->
-        <!-- <div id="ship-to-place"></div> -->
+        <!-- <template id="ship-to-place-template">
+          <div id="ship-to-place"></div>
+        </template> -->
+
+        <template id="coordinates-info-box-template">
+          <div id="coordinates-info-box">
+            <div class="title">System Status: Online</div>
+            <div>Targeted Coordinates</div>
+            <div class="wrapper">
+              <div class="coordinates"><span>??</span></div>
+              <div class="missile-box">
+                <img
+                  src="./assets/icons/missile-icon.png"
+                  alt="Missile"
+                  class="icon missile-icon"
+                  face-to="right"
+                />
+              </div>
+            </div>
+          </div>
+        </template>
 
         <div id="new-game-section" class="section" hidden="true">
           <button id="rematch-btn" type="button">Rematch</button>

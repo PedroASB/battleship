@@ -112,6 +112,7 @@ export default class GameController {
     domManager.unsetTarget(this.#attacker.getId());
     domManager.setTarget(this.#receiver.getId());
     domManager.displayCurrentTurnMessage(this.#attacker.name);
+    domManager.faceMissileIconToOpposite();
   }
 
   #checkWinning() {
@@ -309,6 +310,7 @@ export default class GameController {
     this.#setBoardToPlay(this.playerTwo);
 
     domManager.setTarget(this.#receiver.getId());
+    domManager.faceMissileIconToRight();
     domManager.displayFeedbackMessage(`The battleship has started!`);
     domManager.displayCurrentTurnMessage(this.#attacker.name);
     domManager.showNewGameSection();

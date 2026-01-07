@@ -134,6 +134,19 @@ export function removePlayerBox(playerId) {
   playerBox.remove();
 }
 
+export function addCoordinatesInfoBox() {
+  const playersSection = document.querySelector('#players-section');
+  const turnInfoBoxTemplate = document.querySelector('#coordinates-info-box-template');
+  const turnInfoBox = turnInfoBoxTemplate.content.cloneNode(true).getElementById('coordinates-info-box');
+
+  playersSection.appendChild(turnInfoBox);
+}
+
+export function removeTurnInfoBox() {
+  const turnInfoBox = document.getElementById('coordinates-info-box');
+  turnInfoBox.remove();
+}
+
 export function clearPlayersSection() {
   const playersSection = document.querySelector('#players-section');
   playersSection.innerHTML = '';
@@ -193,8 +206,6 @@ export function addSetupBoard(
         squareDiv.title = `${friendlyCoordinates.x} ${friendlyCoordinates.y}`;
         if (squareHoverCallback) squareHoverCallback(playerInstance, coordinates);
       });
-
-      squareDiv.addEventListener('mouseleave', clearCoordinatesFeedback);
 
       boardDiv.appendChild(squareDiv);
       y++;
@@ -268,7 +279,7 @@ export function receiveAttack(playerId, coordinates) {
 export function setTarget(playerId) {
   const playerBox = document.getElementById(playerId);
   const boardDiv = playerBox.querySelector('.board');
-  const boardTitleTarget = playerBox.querySelector('.target');
+  const boardTitleTarget = playerBox.querySelector('.target img');
 
   boardDiv.classList.add('targetable');
   boardTitleTarget.classList.remove('hidden');
@@ -277,7 +288,7 @@ export function setTarget(playerId) {
 export function unsetTarget(playerId) {
   const playerBox = document.getElementById(playerId);
   const boardDiv = playerBox.querySelector('.board');
-  const boardTitleTarget = playerBox.querySelector('.target');
+  const boardTitleTarget = playerBox.querySelector('.target img');
 
   boardDiv.classList.remove('targetable');
   boardTitleTarget.classList.add('hidden');
@@ -315,15 +326,31 @@ export function getFriendlyCoordinates(coordinates) {
 export function displayAttackMessage(attackerName, receiverName, coordinates) {
   const feedbackMessage = document.querySelector('#feedback-section .message');
   const { x, y } = getFriendlyCoordinates(coordinates);
-  feedbackMessage.textContent = `${attackerName} attacked ${receiverName} at ${x} ${y}`;
+  feedbackMessage.textContent = `${attackerName} attacked ${receiverName} at ${x}${y}`;
 }
 
 export function displayCoordinatesFeedback(coordinates) {
-  const coordinatesFeedback = document.querySelector('#feedback-section .coordinates');
-  coordinatesFeedback.textContent = `${coordinates.x} ${coordinates.y}`;
+  const coordinatesFeedback = document.querySelector('#coordinates-info-box .coordinates span');
+  coordinatesFeedback.textContent = `${coordinates.x}${coordinates.y}`;
 }
 
 export function clearCoordinatesFeedback() {
-  const coordinatesFeedback = document.querySelector('#feedback-section .coordinates');
-  coordinatesFeedback.textContent = '';
+  const coordinatesFeedback = document.querySelector('#coordinates-info-box .coordinates span');
+  coordinatesFeedback.textContent = '??';
+}
+
+export function faceMissileIconToRight() {
+  const missileIcon = document.querySelector('#coordinates-info-box .missile-icon');
+  missileIcon.setAttribute('face-to', 'right');
+}
+
+export function faceMissileIconToLeft() {
+  const missileIcon = document.querySelector('#coordinates-info-box .missile-icon');
+  missileIcon.setAttribute('face-to', 'left');
+}
+
+export function faceMissileIconToOpposite() {
+  const missileIcon = document.querySelector('#coordinates-info-box .missile-icon');
+  const newDirection = missileIcon.getAttribute('face-to') === 'left' ? 'right' : 'left';
+  missileIcon.setAttribute('face-to', newDirection);
 }

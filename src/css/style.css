@@ -31,6 +31,11 @@
   --square-allowed-border-color: #a8e496;
   --square-not-allowed-border-color: #f59191;
 
+  /* --cannon-red-color: #c33636; */
+  --radar-content-color: #7fff90;
+  --radar-background-color: #242b25;
+  --radar-border-color: #424242;
+
   --button-border-color: #c4c4c4;
   --button-background-color: #ebebeb;
   --button-hover-border-color: #b0b6c2;
@@ -220,14 +225,13 @@ main {
     width: 600px;
     min-height: 80px;
     padding: 8px 16px;
-    color: #7fff90;
-    background-color: #242b25;
-    border: 6px solid #424242;
+    color: var(--radar-content-color);
+    background-color: var(--radar-background-color);
+    border: 6px solid var(--radar-border-color);
     border-radius: 32px;
     font-family: 'Black Ops One', monospace, var(--system-ui);
     font-size: 1.2rem;
     font-family: 'Courier New', Courier, monospace;
-    /* text-transform: uppercase; */
     font-weight: 600;
   }
 
@@ -236,8 +240,8 @@ main {
     display: flex;
     align-items: center;
     flex-direction: row;
-    justify-content: space-evenly;
-    gap: 32px;
+    justify-content: center;
+    gap: 16px;
   }
 
   #new-game-section[hidden='false'] {
@@ -247,8 +251,8 @@ main {
 
     [type='button'] {
       text-transform: uppercase;
-      width: 16ch;
-      padding: 4px 0;
+      width: 18ch;
+      padding: 8px 4px;
       border: none;
       border-radius: 8px;
       border-bottom: 4px solid var(--button-border-color);
@@ -264,11 +268,88 @@ main {
   }
 }
 
+#coordinates-info-box {
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  min-width: 260px;
+  padding: 16px 24px;
+  border: 6px solid var(--radar-border-color);
+  background-color: var(--radar-background-color);
+  border-radius: 32px;
+  gap: 8px;
+
+  .title,
+  .title + div {
+    font-family: 'Courier New', Courier, monospace;
+    color: var(--radar-content-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .title {
+    border: 2px solid var(--radar-content-color);
+  }
+
+  .wrapper {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .missile-box {
+    width: 100px;
+    user-select: none;
+    padding: 16px;
+
+    .icon {
+      -webkit-user-drag: none;
+    }
+
+    .icon[face-to='left'] {
+      transform: rotate(335deg);
+    }
+
+    .icon[face-to='right'] {
+      transform: rotate(115deg);
+    }
+  }
+
+  .coordinates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.2rem;
+    width: 70px;
+    height: 70px;
+    padding: 16px;
+    font-family: monospace, var(--system-ui);
+    font-weight: 600;
+    color: var(--radar-content-color);
+    border: 3px dashed currentColor;
+    border-radius: 16px;
+    /* border-radius: 50%; */
+    /* position: relative; */
+    /* top: 60px; */
+    /* right: 20px; */
+  }
+}
+
 .player-box {
   padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   .title {
     display: flex;
@@ -282,8 +363,10 @@ main {
 
     .target {
       width: 30px;
+      height: 30px;
+      margin: 0;
 
-      &.hidden {
+      img.hidden {
         display: none;
       }
     }

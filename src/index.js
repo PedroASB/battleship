@@ -34,6 +34,7 @@ function startPlayerVsComputer() {
     const readyFleet = gameController.confirmFleet();
     if (readyFleet) {
       domManager.removeConfirmFleetButton(player.getId());
+      domManager.addCoordinatesInfoBox();
       domManager.addPlayerBox(computer.name, computer.getId());
       domManager.hideFleet(computer.getId());
       gameController.startBattle();
@@ -61,6 +62,7 @@ function startPlayerVsPlayer(playerOneName, playerTwoName) {
   function start() {
     domManager.removePlayerBox(playerTwo.getId());
     domManager.addPlayerBox(playerOne.name, playerOne.getId());
+    domManager.addCoordinatesInfoBox();
     domManager.addPlayerBox(playerTwo.name, playerTwo.getId());
     // domManager.removeConfirmFleetButton(playerTwo.getId());
 
