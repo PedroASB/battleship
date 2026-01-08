@@ -172,10 +172,6 @@ export default class GameController {
     domManager.displayCoordinatesFeedback(friendlyCoordinates);
   }
 
-  /**
-   * Ship placement
-   */
-
   #switchCurrentPlacementAxis() {
     this.#currentPlacementAxis = this.#currentPlacementAxis === 'x' ? 'y' : 'x';
   }
@@ -268,10 +264,6 @@ export default class GameController {
     this.#displayCurrentShipToPlace(player);
   }
 
-  /**
-   * Board settings
-   */
-
   #setBoardToPlaceShips(player) {
     domManager.addSetupBoard(player.getId(), player.getBoardDto(), player, {
       squareHoverCallback: this.#shipPlacementHover.bind(this),
@@ -290,10 +282,6 @@ export default class GameController {
     });
   }
 
-  /**
-   * Confirm fleet button handler
-   */
-
   confirmFleet() {
     if (this.#shipsQueue.length > 1) {
       alert(`There are ${this.#shipsQueue.length} remaining ships to place.`);
@@ -306,10 +294,6 @@ export default class GameController {
 
     return true;
   }
-
-  /**
-   * Start game
-   */
 
   startBattle() {
     this.#attacker = this.playerOne;

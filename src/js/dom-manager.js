@@ -328,9 +328,10 @@ export function getFriendlyCoordinates(coordinates) {
 export function displayAttackMessage(attackerName, receiverName, coordinates, shipHit) {
   const feedbackMessage = document.querySelector('#feedback-section .message');
   const { x, y } = getFriendlyCoordinates(coordinates);
-  const hitOrMiss = shipHit ? "HIT" : "MISS";
+  const hitOrMiss = shipHit ? 'HIT' : 'MISS';
 
-  feedbackMessage.textContent = `${attackerName} has attacked ${receiverName} at ${x}${y}: ` + hitOrMiss;
+  feedbackMessage.textContent =
+    `${attackerName} has attacked ${receiverName} at ${x}${y}: ` + hitOrMiss;
 }
 
 export function displayCoordinatesFeedback(coordinates) {

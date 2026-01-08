@@ -31,7 +31,6 @@
   --square-allowed-border-color: #a8e496;
   --square-not-allowed-border-color: #f59191;
 
-  /* --cannon-red-color: #c33636; */
   --radar-content-color: #7fff90;
   --radar-background-color: #242b25;
   --radar-border-color: #424242;
@@ -343,10 +342,6 @@ main {
     color: var(--radar-content-color);
     border: 3px dashed currentColor;
     border-radius: 16px;
-    /* border-radius: 50%; */
-    /* position: relative; */
-    /* top: 60px; */
-    /* right: 20px; */
   }
 }
 
