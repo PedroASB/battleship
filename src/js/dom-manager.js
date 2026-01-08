@@ -325,10 +325,12 @@ export function getFriendlyCoordinates(coordinates) {
   return { x: String.fromCharCode(65 + (coordinates.x % 26)), y: coordinates.y + 1 };
 }
 
-export function displayAttackMessage(attackerName, receiverName, coordinates) {
+export function displayAttackMessage(attackerName, receiverName, coordinates, shipHit) {
   const feedbackMessage = document.querySelector('#feedback-section .message');
   const { x, y } = getFriendlyCoordinates(coordinates);
-  feedbackMessage.textContent = `${attackerName} attacked ${receiverName} at ${x}${y}`;
+  const hitOrMiss = shipHit ? "HIT" : "MISS";
+
+  feedbackMessage.textContent = `${attackerName} has attacked ${receiverName} at ${x}${y}: ` + hitOrMiss;
 }
 
 export function displayCoordinatesFeedback(coordinates) {

@@ -143,15 +143,17 @@ export default class GameController {
     await delay(1);
 
     domManager.receiveAttack(player.getId(), coordinates);
-    domManager.displayAttackMessage(this.#attacker.name, this.#receiver.name, coordinates);
 
     if (this.#checkWinning()) {
       this.#handleWinning();
       return;
     }
 
+    const shipHit = player.hasShipAt(coordinates);
+    domManager.displayAttackMessage(this.#attacker.name, this.#receiver.name, coordinates, shipHit);
+
     // if the player misses a shot, pass the turn to the other player
-    if (!player.hasShipAt(coordinates)) {
+    if (!shipHit) {
       this.#swapAttacker();
     }
 

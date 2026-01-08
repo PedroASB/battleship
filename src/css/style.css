@@ -222,9 +222,9 @@ main {
     justify-content: center;
     text-align: center;
     gap: 8px;
-    width: 600px;
+    width: 700px;
     min-height: 80px;
-    padding: 8px 16px;
+    padding: 16px;
     color: var(--radar-content-color);
     background-color: var(--radar-background-color);
     border: 6px solid var(--radar-border-color);
