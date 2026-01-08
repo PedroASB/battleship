@@ -159,6 +159,7 @@ export default class GameController {
 
     // if the next attacker is the computer, call a function to calculate the attack
     if (this.#attacker.isComputer()) {
+      await delay(1.5);
       this.#handleComputerAttack();
     }
   }
